@@ -1,0 +1,18 @@
+# region ios
+identifier = ENV['APP_IDENTIFIER']
+app_identifier(identifier) unless !identifier || identifier.strip.empty?
+
+env_team_id = ENV['TEAM_ID']
+team_id(env_team_id) unless !env_team_id || env_team_id.strip.empty?
+
+env_itc_team_id = ENV['ITC_TEAM_ID']
+itc_team_id(env_itc_team_id) unless !env_itc_team_id || env_itc_team_id.strip.empty?
+# endregion ios
+
+# android
+android_name = ENV['ANDROID_PACKAGE_NAME']
+package_name(android_name) unless !android_name || android_name.strip.empty?
+
+json_file = ENV['GOOGLE_JSON_FILE']
+json_key_file(json_file) unless !json_file || json_file.strip.empty?
+# end android

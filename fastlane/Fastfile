@@ -1,0 +1,190 @@
+before_all do |_, _|
+  setup_ci if is_ci
+end
+
+# android start
+platform :android do
+  desc 'Build and publish an Android build'
+  lane :publish do |options|
+    project_dir = 'android/'
+    track = options[:track]
+    track = blank?(track) ? 'production' : track
+
+    gradle(
+      task: 'clean',
+      project_dir: project_dir
+    )
+
+    task = 'bundle'
+    build_type = 'Release'
+    flavor = ENV['ANDROID_FLAVOR']
+    properties = get_build_properties
+
+    gradle(
+      task: task,
+      build_type: build_type,
+      flavor: flavor,
+      project_dir: project_dir,
+      properties: properties
+    )
+
+    isFlutter = is_flutter?()
+
+    UI.message(isFlutter ? "Is Flutter" : "Not Flutter")
+
+    track = options[:track]
+    track_promote_to = track == 'beta' ? track : nil
+    aab = isFlutter ? './build/app/outputs/bundle/release/app-release.aab' : nil;
+    upload_to_play_store(
+      track: track,
+      aab: aab,
+      track_promote_to: track_promote_to,
+      release_status: 'draft'
+    )
+  end
+end
+# end android
+
+private_lane :get_build_properties do
+  skip_signing = parse_boolean(ENV['ANDROID_SKIP_SIGNING'], false)
+
+  android_env_vars = %w[ANDROID_STORE_FILE ANDROID_STORE_PASSWORD ANDROID_KEY_ALIAS ANDROID_KEY_PASSWORD]
+  ensure_env_vars(env_vars: android_env_vars) unless skip_signing
+
+  properties = {}
+
+  # Set signing variables optionally, let the build process fail if any of them is not set
+  store_file = ENV['ANDROID_STORE_FILE']
+  properties['android.injected.signing.store.file'] = store_file if !skip_signing && !blank?(store_file)
+
+  store_password = ENV['ANDROID_STORE_PASSWORD']
+  properties['android.injected.signing.store.password'] = store_password if !skip_signing && !blank?(store_password)
+
+  key_alias = ENV['ANDROID_KEY_ALIAS']
+  properties['android.injected.signing.key.alias'] = key_alias if !skip_signing && !blank?(key_alias)
+
+  key_password = ENV['ANDROID_KEY_PASSWORD']
+  properties['android.injected.signing.key.password'] = key_password if !skip_signing && !blank?(key_password)
+
+  # Overwrite version.code property if build number environment variable is a valid number
+  build_number = ENV['APP_BUILD_NUMBER']
+  is_build_number_valid = !blank?(build_number) && !Integer(build_number.strip, exception: false).nil?
+  properties['versionCode'] = build_number if is_build_number_valid
+
+  build_name = ENV['APP_BUILD_NAME']
+  is_build_name_valid = !blank?(build_name)
+  properties['versionName'] = build_name if is_build_name_valid
+
+  properties
+end
+
+# region ios
+platform :ios do
+  desc 'Build and publish an iOS release version (App Store)'
+  lane :release do |options|
+    ensure_env_vars(env_vars: %w[APPLE_KEY_ID APPLE_KEY_FILE APPLE_ISSUER_ID])
+    app_store_connect_api_key(
+      key_filepath: ENV['APPLE_KEY_FILE']&.strip,
+      key_id: ENV['APPLE_KEY_ID']&.strip,
+      issuer_id: ENV['APPLE_ISSUER_ID']&.strip,
+      duration: 1200,
+      in_house: false
+    )
+
+    ensure_env_vars(env_vars: %w[IOS_SCHEME XCODE_PROJ])
+
+    xcworkspace = ENV['XCODE_WORKSPACE']
+    xcodeproj = ENV['XCODE_PROJ']
+
+    type = options[:type]
+    type = if blank?(type)
+             enterprise = parse_boolean(ENV['APPLE_ENTERPRISE'], false)
+             enterprise ? 'enterprise' : 'appstore'
+           else
+             type
+           end
+
+    env = options[:env]
+    env = blank?(env) ? 'release' : env
+
+    live = env == 'release'
+
+    configuration = 'Release'
+
+    build_number_env = ENV['APP_BUILD_NUMBER']&.downcase&.strip
+    build_number = if options[:type] == 'appstore' && build_number_env == 'store'
+                     app_store_build_number(live: options[:live]) + 1
+                   elsif build_number_env
+                     Integer(build_number_env, exception: false)
+                   end
+
+    increment_build_number(build_number: build_number, xcodeproj: xcodeproj)
+    increment_version_number(
+      version_number: ENV["APP_BUILD_NAME"],
+      xcodeproj: xcodeproj
+    )
+    cocoapods(clean_install: is_ci, podfile: './ios/Podfile')
+    configure_certificates(type: type)
+    configure_signing(xcodeproj: xcodeproj, configuration: configuration)
+
+    scheme = ENV['IOS_SCHEME'].strip
+    team_id = CredentialsManager::AppfileConfig.try_fetch_value(:team_id)
+
+    gym(
+      workspace: blank?(xcworkspace) ? nil : xcworkspace,
+      project: blank?(xcworkspace) ? xcodeproj : nil,
+      scheme: scheme,
+      configuration: configuration,
+      export_team_id: team_id,
+      export_method: Actions.lane_context[SharedValues::SIGH_PROFILE_TYPE],
+      export_options: {
+        signingStyle: 'manual'
+      }
+    )
+
+    upload_to_app_store(force: true, skip_screenshots: true, skip_metadata: true, precheck_include_in_app_purchases: false)
+  end
+end
+# endregion ios
+
+desc 'Fetch certificates and provisioning profiles'
+private_lane :configure_certificates do |options|
+  identifier = CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier)
+  match(app_identifier: identifier, type: options[:type], readonly: is_ci)
+end
+
+desc 'Configure iOS code signing'
+private_lane :configure_signing do |options|
+  build_configurations = [options[:configuration]]
+  path = options[:xcodeproj]
+
+  bundle_identifier = CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier)
+  team_id = CredentialsManager::AppfileConfig.try_fetch_value(:team_id)
+  profiles = Actions.lane_context[SharedValues::MATCH_PROVISIONING_PROFILE_MAPPING]
+  profile_name = profiles[bundle_identifier]
+
+  update_code_signing_settings(
+    use_automatic_signing: false,
+    bundle_identifier: bundle_identifier,
+    path: path,
+    profile_name: profile_name,
+    team_id: team_id,
+    build_configurations: build_configurations,
+    code_sign_identity: 'iPhone Distribution' # fixme?: May need to change for other types of builds
+  )
+end
+
+def parse_boolean(value, default)
+  value = value&.downcase&.strip
+  blank?(value) ? default : %w[yes true 1].include?(value)
+end
+
+def blank?(obj)
+  return obj.strip.empty? if obj.is_a?(String)
+  obj.respond_to?(:empty?) ? obj.empty? : !obj
+end
+
+def is_flutter?()
+    return false unless File.exist?('../pubspec.yaml')
+    return true
+end

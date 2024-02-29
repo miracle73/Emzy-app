@@ -1,0 +1,35 @@
+name: Deploy iOS release
+on:
+  workflow_dispatch:
+    inputs:
+      versionName:
+        description: 'Version Name'
+        required: true
+      versionCode:
+        description: 'Version Code'
+        required: true
+      packageName:
+        description: 'Package Name'
+        required: true
+
+jobs:
+  deploy:
+    runs-on: macos-latest
+    steps:
+      - name: Build and publish
+        uses: ZEITIOS-LLC/fastlane-ios-action@v1.0
+        with:
+          app-identifier: ${{ github.event.inputs.packageName }}
+          build-name:  ${{ github.event.inputs.versionName }}
+          build-number:  ${{ github.event.inputs.versionCode }}
+          team-id: ${{ secrets.APPLE_TEAM_ID }}
+          itc-team-id: ${{ secrets.ITC_TEAM_ID }}
+          scheme: ${{ secrets.IOS_SCHEME }}
+          configuration: 'Release'
+          xcodeproj: ${{ secrets.IOS_XCODEPROJ }}
+          xcworkspace: ${{ secrets.IOS_XCWORKSPACE }}
+          apple-key-id: ${{ secrets.APPLE_KEY_ID }}
+          apple-issuer-id: ${{ secrets.APPLE_ISSUER_ID }}
+          apple-key-base64: ${{ secrets.APPLE_KEY }}
+          match-password: ${{ secrets.MATCH_PASSWORD }}
+          match-git-basic-auth: ${{ secrets.MATCH_GIT_BASIC_AUTHORIZATION }}

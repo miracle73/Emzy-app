@@ -1,0 +1,32 @@
+name: Deploy Android release
+on:
+  workflow_dispatch:
+    inputs:
+      versionName:
+        description: 'Version Name'
+        required: true
+      versionCode:
+        description: 'Version Code'
+        required: true
+      packageName:
+        description: 'Package Name'
+        required: true
+
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Build and publish
+        uses: ZEITIOS-LLC/fastlane-android-action@v0.5
+        with:
+          java-version: 17
+          package-name: ${{ github.event.inputs.packageName }}
+          version-name: ${{ github.event.inputs.versionName }}
+          version-code: ${{ github.event.inputs.versionCode }}
+          google-json-key-base64: ${{ secrets.GOOGLE_JSON_KEY }}
+          key-store-base64: ${{ secrets.ANDROID_STORE_FILE }}
+          key-store-password: ${{ secrets.ANDROID_STORE_PASSWORD }}
+          key-alias: ${{ secrets.ANDROID_KEY_ALIAS }}
+          key-password: ${{ secrets.ANDROID_KEY_PASSWORD }}
