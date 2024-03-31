@@ -252,7 +252,7 @@ width: 100%;
 export const AccountabilitySplashInitialFooterTitle = styled.Text`
 font-family: Nunito;
 font-weight: 700;
-font-size: 28px;
+font-size: 25px;
 text-align: center;
 color: #FFFFFF;
 `
@@ -266,10 +266,12 @@ justify-content: space-between;
 align-items: center;
 `
 export const AccountabilityRearHeaderContainer = styled.Image`
-display: flex;
+
 flex-direction: column;
 align-items: center;
 justify-content: center;
+width: 100%;
+height: 60%;
 `
 export const AccountabilityRearBodyTitle = styled.Text`
 font-family: Poppins;
@@ -424,6 +426,8 @@ font-size: 16px;
 color: #000000;
 `
 export const ChatFooterContainer = styled.View`
+width: 90%;
+margin-bottom: 10px;
 `
 export const MessageContainer = styled.View`
 height: 70px;
@@ -448,18 +452,21 @@ width: 80%;
 export const SendMessageButton = styled.TouchableOpacity`
 width: 20%;
 `
-export const ChatBodyContainer = styled.ScrollView`
+export const ChatBodyContainer = styled.View`
 `
 export const ReceivedMessageContainer = styled.View<{index: number}>`
 display: flex;
 flex-direction: column;
 gap: 5px;
-align-items: ${({ index }) => index === 1 ? 'flex-start' : 'flex-end'};
-`
-export const ReceivedMessage = styled.Text<{ index: number }>`
-width: 308px;
 border-radius: ${({ index }) => index === 1 ? '20px 20px 20px 0px' : '20px 20px 0px 20px'};
 background: ${({ index }) => index === 1 ? '#3498DB' : '#D9D9D9'};
+margin-top:10px;
+width: 90%;
+`
+export const ReceivedMessage = styled.Text<{ index: number }>`
+width: 90%;
+border-radius: ${({ index }) => index === 1 ? '20px 20px 20px 0px' : '20px 20px 0px 20px'};
+
 padding: 10px 20px 10px 20px;
 font-family: Nunito;
 font-weight: 400;

@@ -1,6 +1,5 @@
 export const AccountabilityNotificationModeData = [
     'Push Notification',
-    'SMS',
     'Email'
 ]
 

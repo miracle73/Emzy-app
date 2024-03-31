@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { FC, useState } from 'react'
 import { Alert, KeyboardAvoidingView, Modal, Platform, Text, View } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import AppButton from '../../Components/AppButton/AppButton'
@@ -6,22 +6,20 @@ import AppInfoButton from '../../Components/AppInfoButton/AppInfoButton'
 import AppTextArea from '../../Components/AppTextArea/AppTextArea'
 import BackArrow from '../../Images/SignUp/BackArrow'
 import { GoalBackContainer, GoalBodyContainer, GoalFooterContainer, GoalHeaderContainer, GoalHeaderDescription, GoalHeaderTitle, GoalsContainer, Icon, ModalBodyContainer, ModalContainer, ModalWrapper, ModelBodyDescription } from './Goals.styled'
+import StyledRoot from '../../Components/StyledRoot'
+import { Props } from '../../Utils/utility_functions/utilityFunctions'
 
-const Goals = () => {
+
+const Goals: FC<Props> = ({ navigation }) => {
     const [isOpen, setIsOpen] = useState<boolean>(false)
     const handleOpenModel = () => {
         setIsOpen(!isOpen)
     }
-  return (
-    <LinearGradient
-        colors={['#3E7CD9', 'white', 'white', '#3E7CD9']}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-    >
-        <KeyboardAvoidingView
-            behavior={Platform.OS == "ios" ? "padding" : "height"}
-            keyboardVerticalOffset={Platform.OS == "ios" ? 0 : 20}
-            enabled={Platform.OS === "ios" ? true : false}
+    return (
+        <LinearGradient
+            colors={['#3E7CD9', 'white', 'white', '#3E7CD9']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
         >
             <GoalsContainer>
                 <Modal
@@ -29,7 +27,7 @@ const Goals = () => {
                     transparent={true}
                     visible={isOpen}
                     onRequestClose={() => {
-                    setIsOpen(!isOpen);
+                        setIsOpen(!isOpen);
                     }}>
                     <ModalWrapper>
                         <ModalContainer>
@@ -42,12 +40,12 @@ const Goals = () => {
                                     Praesent vestibulum metus eu sapien feugiat tristique. Sed ultricies, justo et fermentum faucibus, tellus dui blandit dui, nec molestie justo elit nec arcu. Nulla facilisi. Pellentesque in rhoncus nisl. Nullam cursus risus sit amet arcu dapibus pharetra. Etiam sodales felis non ipsum vestibulum feugiat. Donec vitae ligula et mauris volutpat aliquet sed vel turpis. Curabitur eget felis lacus.
                                 </ModelBodyDescription>
                             </ModalBodyContainer>
-                        </ModalContainer>   
+                        </ModalContainer>
                     </ModalWrapper>
                 </Modal>
 
                 <GoalBackContainer>
-                    <Icon>
+                    <Icon onPress={() => navigation.goBack()}>
                         <BackArrow />
                     </Icon>
                 </GoalBackContainer>
@@ -57,15 +55,14 @@ const Goals = () => {
                     <AppInfoButton buttonLabel={'Read More'} onPress={() => handleOpenModel()} />
                 </GoalHeaderContainer>
                 <GoalBodyContainer>
-                    <AppTextArea onChange={() => {}}/> 
+                    <AppTextArea onChange={() => { }} />
                 </GoalBodyContainer>
                 <GoalFooterContainer>
-                    <AppButton buttonLabel={'Continue'} onPress={() => {}}/>
+                    <AppButton buttonLabel={'Continue'} onPress={() => { navigation.navigate('IdentitySplashInitial') }} />
                 </GoalFooterContainer>
             </GoalsContainer>
-        </KeyboardAvoidingView>
-    </LinearGradient>
-  )
+        </LinearGradient>
+    )
 }
 
 export default Goals

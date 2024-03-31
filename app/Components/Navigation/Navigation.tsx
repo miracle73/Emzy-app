@@ -1,46 +1,30 @@
-import React, { useState } from 'react'
-import {NavigationContainer, useNavigation} from '@react-navigation/native';
-import { NavigationWrapper } from './Navigation.styled';
+import React from 'react'
+import { NavigationContainer } from '@react-navigation/native';
 import TabNavigation from './TabNavigation';
-import { KeyboardAvoidingView, Platform } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import SplashFirst from '../../Screens/Splash/SplashFirst';
-import SplashSecond from '../../Screens/Splash/SplashSecond';
-import SplashThird from '../../Screens/Splash/SplashThird';
-import SplashForth from '../../Screens/Splash/SplashForth';
+import LoginStack from './auth_stack/login_stack/LoginStack';
+import SignupStack from './auth_stack/signup_stack/SignupStack';
+import OnboardingStack from './onboarding/OnboardingStack';
+import ForgotPasswordStack from './auth_stack/forgot_password/ForgotPasswordStack';
+import OnboardingKnowledge from './onboarding_knowledge/OnboardingKnowledge';
+
+
+
+const Stack = createNativeStackNavigator();
 
 const Navigation = () => {
-  const Stack = createNativeStackNavigator();
-  const [showOnboarding, setShowOnboarding] = useState<boolean>(true)
-  const OnboardingStack = () => (
-    <Stack.Navigator initialRouteName="SplashFirst">
-      <Stack.Screen name="SplashFirst" component={SplashFirst} options={{ headerShown: false }} />
-      <Stack.Screen name="SplashSecond" component={SplashSecond} options={{ headerShown: false }} />
-      <Stack.Screen name="SplashThird" component={SplashThird} options={{ headerShown: false }} />
-      <Stack.Screen
-        name="SplashForth"
-        component={SplashForth}
-        options={{ headerShown: false }}
-        initialParams={{ setShowOnboarding }} // Pass the state-setting function as a parameter
-      />    
-    </Stack.Navigator>
-  );
+
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS == "ios" ? "padding" : "height"}
-      keyboardVerticalOffset={Platform.OS == "ios" ? 0 : 20}
-      enabled={Platform.OS === "ios" ? true : false}
-    >
-      <NavigationWrapper>
-        <NavigationContainer>
-          {showOnboarding ? (
-            <OnboardingStack />
-          ) : (
-            <TabNavigation />
-          )}
-        </NavigationContainer>
-      </NavigationWrapper>
-    </KeyboardAvoidingView>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="OnboardingStack" component={OnboardingStack} options={{ headerShown: false }} />
+        <Stack.Screen name="OnboardingKnowledge" component={OnboardingKnowledge} options={{ headerShown: false }} />
+        <Stack.Screen name="LoginStack" component={LoginStack} options={{ headerShown: false }} />
+        <Stack.Screen name="SignupStack" component={SignupStack} options={{ headerShown: false }} />
+        <Stack.Screen name="TabNavigation" component={TabNavigation} options={{ headerShown: false }} />
+        <Stack.Screen name="ForgotPasswordStack" component={ForgotPasswordStack} options={{ headerShown: false }} />
+      </Stack.Navigator>
+    </NavigationContainer>
   )
 }
 

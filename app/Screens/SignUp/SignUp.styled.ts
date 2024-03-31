@@ -1,13 +1,15 @@
 import { styled } from "styled-components/native";
+import { colors } from "../../Utils/theme/colors";
 
 export const SignUpContainer = styled.View`
 display: flex;
 flex-direction: column;
 gap: 20px;
 padding: 20px;
-justify-content: center;
 align-items: center;
 height: 100%;
+width: 100%;
+paddingTop: 30px;
 `
 export const SignUpHeaderContainer = styled.View`
 display: flex;
@@ -25,11 +27,13 @@ export const SignUpHeaderTitle = styled.Text`
 font-weight: 700;
 font-size: 24px;
 color: gold;
-font-family: Nunito;
+font-family: Nunito Regular;
 `
 export const SignUpHeaderDescription = styled.Text`
-color: #52525B;
-font-family: Poppins;
+color: ${colors.daviGrey};
+font-family: Poppins Regular;
+font-weight: 400;
+font-size: 16px;
 `
 export const SignUpNameContainer = styled.View`
 display: flex;
@@ -44,7 +48,7 @@ gap: 20px;
 width: 100%;
 `
 export const GoogleButton = styled.TouchableOpacity`
-background: #FFFFFF;
+background: ${colors.white};
 width: 100%;
 height: 64px;
 padding: 20px 32px 20px 32px;
@@ -54,13 +58,13 @@ flex-direction: row;
 justify-content: center;
 gap: 10px;
 align-items: center;
-border: 1px solid #C7CBD1;
+border: 1px solid ${colors.ghost};
 `
 export const GoogleButtonText = styled.Text`
 font-weight: 900;
 font-size: 14px;
-color: #161C2C;
-font-family: Poppins;
+color: ${colors.mirage};
+font-family: Poppins Regular;
 `
 export const FooterDescriptionContainer = styled.View`
 display: flex;
@@ -72,12 +76,12 @@ justify-content: center;
 export const FooterDescription = styled.Text`
 font-weight: 400;
 font-size: 14px;
-color: #161C2C;
-font-family: Poppins;
+color: ${colors.mirage};
+font-family: Poppins Regular;
 `
 export const FooterSignUpLink = styled.Text`
-color: #1A73E8;
+color: ${colors.blueDress};
 font-weight: 900;
 font-size: 14px;
-font-family: Poppins;
+font-family: Poppins Regular;
 `

@@ -1,18 +1,24 @@
-import React from 'react'
-import { DesireSplashInitialContainer, DesireSplashInitialFooterContainer, DesireSplashInitialFooterTitle, DesireSplashInitialHeaderContainer, DesireSplashInitialHeaderTitle } from './Desires.styled'
+import React, { FC } from 'react'
+import StyledRoot from '../../Components/StyledRoot';
+import { Props } from '../../Utils/utility_functions/utilityFunctions';
+import VideoPlayerComponent from '../../Components/video_player/VideoPlayerComponent';
 
-const image = {uri: 'https://legacy.reactjs.org/logo-og.png'};
 
-const DesireSplashInitial = () => {
+const DesireSplashInitial: FC<Props> = ({ navigation }) => {
+
   return (
-    <DesireSplashInitialContainer source={image} resizeMode="cover">
-        <DesireSplashInitialHeaderContainer>
-            <DesireSplashInitialHeaderTitle>Let’s start with your top desired outcome</DesireSplashInitialHeaderTitle>
-        </DesireSplashInitialHeaderContainer>
-        <DesireSplashInitialFooterContainer>
-            <DesireSplashInitialFooterTitle>How to identify what you want</DesireSplashInitialFooterTitle>
-        </DesireSplashInitialFooterContainer>
-    </DesireSplashInitialContainer>
+    <StyledRoot
+      enableScroll={false}
+      useScrollFlex
+      style={{ paddingHorizontal: 0 }}
+      safeAreaStyle={{ backgroundColor: '#474137' }}
+    >
+      <VideoPlayerComponent
+        onContinue={() => navigation.navigate('Desires')}
+        headerText={'Let’s start with your top desired outcome'}
+        footerText={'How to identify what you want'}
+      />
+    </StyledRoot>
   )
 }
 

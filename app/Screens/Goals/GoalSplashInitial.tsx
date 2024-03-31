@@ -1,18 +1,24 @@
-import React from 'react'
-import { GoalSplashInitialContainer, GoalSplashInitialFooterContainer, GoalSplashInitialFooterTitle, GoalSplashInitialHeaderContainer, GoalSplashInitialHeaderTitle } from './Goals.styled'
+  import React, { FC } from 'react'
+import StyledRoot from '../../Components/StyledRoot';
+import { Props } from '../../Utils/utility_functions/utilityFunctions';
+import VideoPlayerComponent from '../../Components/video_player/VideoPlayerComponent';
 
-const image = {uri: 'https://legacy.reactjs.org/logo-og.png'};
 
-const GoalSplashInitial = () => {
+const GoalSplashInitial: FC<Props> = ({ navigation }) => {
+
   return (
-    <GoalSplashInitialContainer source={image} resizeMode="cover">
-      <GoalSplashInitialHeaderContainer>
-          <GoalSplashInitialHeaderTitle>What is your specific desired outcome ?</GoalSplashInitialHeaderTitle>
-      </GoalSplashInitialHeaderContainer>
-      <GoalSplashInitialFooterContainer>
-          <GoalSplashInitialFooterTitle>Set  better goals</GoalSplashInitialFooterTitle>
-      </GoalSplashInitialFooterContainer>
-    </GoalSplashInitialContainer>
+    <StyledRoot
+      enableScroll={false}
+      useScrollFlex
+      style={{ paddingHorizontal: 0 }}
+      safeAreaStyle={{ backgroundColor: '#474137' }}
+    >
+      <VideoPlayerComponent
+        onContinue={() => navigation.navigate('Goals')}
+        headerText={'What is your specific desired outcome ?'}
+        footerText={'Set  better goals'}
+      />
+    </StyledRoot>
   )
 }
 

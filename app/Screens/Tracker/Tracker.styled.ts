@@ -4,7 +4,8 @@ export const TrackerContainer = styled.View`
 height: 100%;
 width: 100%;
 background-color: #ffffff;
-padding: 20px;
+padding-horizontal: 20px;
+padding-bottom:20px;
 display: flex;
 flex-direction: column;
 gap: 20px;
@@ -35,11 +36,13 @@ align-self: flex-end;
 export const AddActivityButtonTitle = styled.Text`
 font-family: Nunito;
 font-weight: 500;
-font-size: 14px;
+font-size: 12px;
 text-align: center;
 color: #FFFFFF;
 `
-export const TrackerBodyContainer = styled.ScrollView`
+export const TrackerBodyContainer = styled.View`
+height: 75%;
+padding-bottom:0px;
 `
 export const ActivityCardContainer = styled.TouchableOpacity`
 width: 100%;
@@ -51,6 +54,7 @@ display: flex;
 flex-direction: row;
 align-items: center;
 justify-content: space-between;
+margin-bottom:12px;
 `
 export const ActivityCardTitle = styled.Text`
 font-family: Nunito;
@@ -91,6 +95,7 @@ display: flex;
 flex-direction: column;
 gap: 20px;
 position: relative;
+paddingBottom:20px;
 `
 export const AddActivityHeaderContainer = styled.View`
 display: flex;
@@ -110,6 +115,7 @@ font-size: 28px;
 color: #3E7CD9;
 `
 export const AddActivityBodyContainer = styled.View`
+margin-top: 25px;
 `
 export const AddActivityFooterContainer = styled.View`
 position: absolute;
@@ -154,6 +160,7 @@ padding: 20px;
 display: flex;
 flex-direction: column;
 gap: 10px;
+margin-top:20px;
 `
 export const CertificationCardWrapper = styled.View`
 display: flex;
@@ -206,12 +213,13 @@ width: 50px;
 height: 50px;
 border-radius: 25px;
 position: absolute;
-left: ${({ index }) =>  `${index*40}px`};
+left: ${({ index }) => `${index * 40}px`};
 `
 export const InfoContainer = styled.View`
 display: flex;
 flex-direction: column;
 gap: 5px;
+margin-top:10px;
 `
 export const InfoTitle = styled.Text`
 font-family: Nunito;
@@ -253,16 +261,13 @@ flex-direction: row;
 align-items: center;
 gap: 20px;
 `
-export const CertificationTab = styled.Text<{ isSelected: boolean }>`
-height: 35px;
+export const CertificationTab = styled.TouchableOpacity<{ isSelected: boolean }>`
 border-radius: 8px;
-padding: 5px 8px 5px 8px;
-text-align: center;
+align-items: center;
 background-color: ${({ isSelected }) => isSelected ? '#E4E3E7' : '#F4F4F5'};
-font-family: Poppins;
-font-weight: 400;
-font-size: 16px;
-color: #52525B;
+justify-content: center;
+padding-horizontal: 10px;
+padding-vertical: 8px;
 `
 export const CertificationFooterContainer = styled.View`
 display: flex;
@@ -272,7 +277,7 @@ justify-content: space-between;
 width: 100%;
 `
 export const CertificationFooterWrapper = styled.View`
-width: 169px;
+width: 220px;
 `
 export const CertificationActionSheetContainer = styled.View`
 height: 370px;

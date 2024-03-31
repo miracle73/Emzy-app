@@ -1,10 +1,12 @@
 import { styled } from "styled-components/native";
+import { colors } from "../../Utils/theme/colors";
 
 export const VerifyEmailContainer = styled.View`
-background: #ffffff;
+background: ${colors.white};
 height: 100%;
 width: 100%;
-padding: 20px;
+padding: 5px;
+padding-top: 15px;
 `
 export const Icon = styled.TouchableOpacity`
 margin-top: 20px;
@@ -17,37 +19,40 @@ flex-direction: column;
 gap: 20px;
 `
 export const VerifyBodyContainerTitle = styled.Text`
-font-family: Nunito;
+font-family: Nunito Regular;
 font-weight: 500;
 font-size: 24px;
-color: #27272A;
+color: ${colors.balticSea};
 `
 export const VerifyBodyContainerDescription = styled.Text`
-font-family: Poppins;
+font-family: Poppins Regular;
 font-weight: 400;
 font-size: 16px;
-color: #485467;
+color: ${colors.riverRed};
 `
 export const ChangeEmailLink = styled.Text`
-font-family: Poppins;
+font-family: Poppins Regular;
 font-weight: 900;
 font-size: 13.78px;
-color: #485467;
+color: ${colors.riverRed};
 `
 export const VerifyEmailCodeInput = styled.TextInput<{ isActiveLength: number }>`
 height: 71px;
 border-radius: 8px;
-border: 1px solid #FFFFFF;
-background: #F7F7F7;
-letter-spacing: 50;
+border: 1px solid ${colors.white};
+background: ${colors.desertStorm};
+letter-spacing: 40;
 text-align: 'center';
-font-size: 30;
+font-size: 26;
+align-items: center;
+width: 100%;
 `
 export const VerifyEmailNotice = styled.Text`
 font-family: Poppins;
 font-weight: 500;
 font-size: 14px;
-color: #485467;
+color: ${colors.riverRed};
+margin-bottom: 30px;
 `
 export const VerifyEmailNoticeSpan = styled(VerifyEmailNotice)`
 font-weight: 800;
