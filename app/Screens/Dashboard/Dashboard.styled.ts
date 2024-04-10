@@ -101,6 +101,7 @@ export const ProfileImage = styled.Image`
 width: 30px;
 height: 30px;
 border-radius: 20px;
+background-color: #FFFFFF;
 `
 export const ProfileTitle = styled.Text`
 font-family: Poppins Regular;

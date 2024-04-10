@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useState } from 'react'
+import React, { FC, useCallback, useState, useContext, useMemo } from 'react'
 import { StyleSheet, ImageBackground, Text, FlatList } from 'react-native'
 import {
     DashboardBodyContainer,
@@ -30,24 +30,37 @@ import CenterIcon from '../../Images/Dashboard/emzy_home.png'
 import { View } from 'native-base';
 import { Props } from '../../Utils/utility_functions/utilityFunctions';
 import { useFocusEffect } from '@react-navigation/core';
+import { useQuery } from '@tanstack/react-query';
+import { AppContext } from '../../data_storage/contextApi/AppContext';
+import { useDashboardService, useDashboardVideoConstants } from './dashboardService';
+import { formatDecimalAmount } from '../../Utils/utility_functions/utilityFunctions';
+import DashboardCarousel from './DashboardCarousel';
+import { DashboardDataModel, VideoConstantsData } from '../../Utils/data_models/dataTypes';
 
 const Dashboard: FC<Props> = ({ navigation }) => {
+    const { userWholeDetails, userLoginData } = useContext(AppContext)
+    const [refetchUserDetails, isRefetchingUserDetails, dashboardData, refetchDashboardData, isRefetchingDashboardData] = useDashboardService()
+    const dashboardValues: DashboardDataModel = useMemo(() => { return dashboardData as DashboardDataModel }, [dashboardData])
+    const [videoConstants, refetchVideoConstants, isRefetchingVideoConstants] = useDashboardVideoConstants()
     const [paused, setPaused] = useState<boolean>(false)
+
     const handleChangePaused = () => {
-        setPaused(!paused)
+        // setPaused(!paused)
     }
 
     useFocusEffect(useCallback(() => {
         return () => handleChangePaused()
     }, []))
+
+    
     return (
         <StyledRoot
             safeAreaStyle={{ backgroundColor: colors.tealishBlue }}
             style={{ paddingHorizontal: 0 }}
             Header={() => (
                 <DashboardHeaderProfileLeftContainer>
-                    <ProfileImage source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }}></ProfileImage>
-                    <ProfileTitle>Hello, Edward Victorhez!</ProfileTitle>
+                    <ProfileImage source={{ uri: userWholeDetails?.data?.profile_picture ?? userLoginData?.data?.profile_picture }}></ProfileImage>
+                    <ProfileTitle>Hello, {userWholeDetails?.data?.first_name ?? userLoginData?.data?.first_name} {userWholeDetails?.data?.last_name ?? userLoginData?.data?.last_name}!</ProfileTitle>
                     <DashboardHeaderProfileRightContainer>
                         <NotificationIcon />
                     </DashboardHeaderProfileRightContainer>
@@ -57,10 +70,10 @@ const Dashboard: FC<Props> = ({ navigation }) => {
 
             <DashboardHeaderContainer>
                 <DopamineCoinContainer>
-                    <DopamineCoinTitle>Available  Dopamine Coin</DopamineCoinTitle>
+                    <DopamineCoinTitle>Available Dopamine Coin</DopamineCoinTitle>
                     <DopamineCoinWrapper>
                         <DopamineCoinIcon />
-                        <DopamineCoinCount>5,000</DopamineCoinCount>
+                        <DopamineCoinCount>{formatDecimalAmount(String(userWholeDetails?.data?.wallet_balance ?? '0.0'))}</DopamineCoinCount>
                     </DopamineCoinWrapper>
                 </DopamineCoinContainer>
                 <ImageBackground
@@ -84,8 +97,8 @@ const Dashboard: FC<Props> = ({ navigation }) => {
                         <View style={{ alignItems: 'flex-end', justifyContent: 'center', width: '45%', paddingRight: 12 }}>
                             <Text style={[styles.centerItemsRight, { fontSize: 12 }]}>Financial freedom in 2023</Text>
                             <Text style={styles.centerItemsRight}>Top priority</Text>
-                            <Text style={styles.centerItemsRight}>Free shopping coupons</Text>
-                            <Text style={styles.centerItemsRight}>50%</Text>
+                            <Text style={styles.centerItemsRight}>{dashboardValues.goal?.rewards ? dashboardValues.goal?.rewards[0] : ""}</Text>
+                            <Text style={styles.centerItemsRight}>{dashboardValues?.goal?.percentage_complete ?? "0"}%</Text>
                         </View>
                     </View>
                 </ImageBackground>
@@ -116,17 +129,16 @@ const Dashboard: FC<Props> = ({ navigation }) => {
                     </DashboardMasterGoalWrapper>
                 </DashboardMasterGoalContainer>
                 <DashboardMasterPickContainer>
-                    <DashboardMasterPickTitle>Hot picks</DashboardMasterPickTitle>
-                    <DashboardMasterPickVideoContainer>
-                        <Video
-                            source={require('../../Video/HotPicksVideo.mp4')}
-                            style={styles.video}
-                            resizeMode="cover"
-                            paused={paused}
-                            repeat
-                            onTouchStart={() => handleChangePaused()}
-                        />
-                    </DashboardMasterPickVideoContainer>
+                    {videoConstants?.length > 0 &&
+                        <>
+                            <DashboardMasterPickTitle>Hot picks</DashboardMasterPickTitle>
+                            <DashboardMasterPickVideoContainer>
+                                <DashboardCarousel
+                                    data={videoConstants as Array<VideoConstantsData>}
+                                />
+                            </DashboardMasterPickVideoContainer>
+                        </>
+                    }
                 </DashboardMasterPickContainer>
             </DashboardBodyContainer>
         </StyledRoot>
@@ -137,7 +149,8 @@ const styles = StyleSheet.create({
     video: {
         height: 201,
         width: '100%',
-        borderRadius: 10
+        borderRadius: 10,
+        backgroundColor: colors.balticSea
     },
     freedom: {
         color: colors.white,

@@ -17,5 +17,6 @@ export const colors = {
     rangoonGreen: '#18181B',
     smokeyGrey: '#71717A',
     ghost: '#C7CBD1',
-    desertStorm: '#F7F7F7'
+    desertStorm: '#F7F7F7',
+    vividRed: '#F90705',
 }

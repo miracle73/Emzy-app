@@ -1,13 +1,46 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useContext, useState } from 'react'
 import { Switch } from 'react-native';
 import BackArrow from '../../Images/SignUp/BackArrow'
 import { NotificationSettingsLoginAttemptSwitchLabel, NotificationSettingsGoalsSwitchLabel } from '../../Utils/Consts/More';
 import { Icon, NotificationSettingsBodyContainer, NotificationSettingsBodyLoginContainer, NotificationSettingsBodyLoginDescription, NotificationSettingsBodyLoginSwitchContainer, NotificationSettingsBodyLoginSwitchLabel, NotificationSettingsBodyLoginSwitchWrapper, NotificationSettingsBodyLoginTitle, NotificationSettingsContainer, NotificationSettingsHeaderContainer, NotificationSettingsHeaderTitle } from './More.styled'
 import StyledRoot from '../../Components/StyledRoot'
-import { Props } from '../../Utils/utility_functions/utilityFunctions'
+import { Props, displayToast } from '../../Utils/utility_functions/utilityFunctions'
+import { setNotifications } from '../../Utils/network_service/NetworkServices';
+import { useMutation } from '@tanstack/react-query';
+import { AppContext } from '../../data_storage/contextApi/AppContext';
 
 
 const NotificationSettings: FC<Props> = ({ navigation }) => {
+  const { userLoginData } = useContext(AppContext)
+  const [switchSettings, setSwitchSettings] = useState(
+    {
+      login: {
+        push: true,
+        email: true,
+        sms: false
+      },
+      goal: {
+        push: true,
+        email: true,
+        sms: false
+      }
+    })
+
+
+  const { mutate, isLoading } = useMutation(setNotifications, {
+    onSuccess: (data: any) => {
+      console.log(data?.data)
+      if (data?.data?.status == 'success') {
+        displayToast('success', 'SUCCESS', data?.data?.message)
+      } else {
+        displayToast('error', 'ERROR', data?.data?.message)
+        return
+      }
+    },
+    onError: (err: any) => {
+      displayToast('error', 'ERROR', 'Notifications settings update has failed.')
+    },
+  });
 
 
 
@@ -33,8 +66,15 @@ const NotificationSettings: FC<Props> = ({ navigation }) => {
                   <NotificationSettingsBodyLoginSwitchWrapper>
                     <NotificationSettingsBodyLoginSwitchLabel>{item}</NotificationSettingsBodyLoginSwitchLabel>
                     <Switch
-                      onValueChange={() => { }}
-                      value={true}
+                      onValueChange={() => {
+                        setSwitchSettings((prev) => item == 'Email' ?
+                          ({ ...prev, ...{ login: { ...prev.login, ...{ email: !prev.login.email } } } })
+                          :
+                          ({ ...prev, ...{ login: { ...prev.login, ...{ push: !prev.login.push } } } })
+                        )
+                        mutate({ token: userLoginData?.data?.access ?? '', notifications: switchSettings })
+                      }}
+                      value={item == 'Email' ? switchSettings?.login?.email : switchSettings?.login?.push}
                     />
                   </NotificationSettingsBodyLoginSwitchWrapper>
                 )
@@ -51,8 +91,15 @@ const NotificationSettings: FC<Props> = ({ navigation }) => {
                   <NotificationSettingsBodyLoginSwitchWrapper>
                     <NotificationSettingsBodyLoginSwitchLabel>{item}</NotificationSettingsBodyLoginSwitchLabel>
                     <Switch
-                      onValueChange={() => { }}
-                      value={false}
+                      onValueChange={() => {
+                        setSwitchSettings((prev) => item == 'Email' ?
+                          ({ ...prev, ...{ goal: { ...prev.goal, ...{ email: !prev.goal.email } } } })
+                          :
+                          ({ ...prev, ...{ goal: { ...prev.goal, ...{ push: !prev.goal.push } } } })
+                        )
+                        mutate({ token: userLoginData?.data?.access ?? '', notifications: switchSettings })
+                      }}
+                      value={item == 'Email' ? switchSettings?.goal?.email : switchSettings?.goal?.push}
                     />
                   </NotificationSettingsBodyLoginSwitchWrapper>
                 )

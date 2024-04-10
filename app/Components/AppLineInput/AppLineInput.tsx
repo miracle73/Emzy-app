@@ -9,22 +9,24 @@ interface Props {
     handleChange: any;
     secureTextEntry?: boolean;
     placeholder?: string;
+    editable?: boolean
 }
 
-const AppLineInput: React.FC<Props> = ({ label, value, handleChange, secureTextEntry, placeholder }) => {
-  return (
-    <View style={styles.containerStyle}>
-        <Text style={styles.labelStyle}>{label}</Text>
-        <TextInput
-            secureTextEntry={secureTextEntry}
-            placeholder={placeholder}
-            autoCorrect={false}
-            style={styles.inputStyle}
-            value={value}
-            onChangeText={handleChange()}
-        />
-    </View>
-  )
+const AppLineInput: React.FC<Props> = ({ label, value, handleChange, secureTextEntry, placeholder, editable = true }) => {
+    return (
+        <View style={styles.containerStyle}>
+            <Text style={styles.labelStyle}>{label}</Text>
+            <TextInput
+                secureTextEntry={secureTextEntry}
+                placeholder={placeholder}
+                autoCorrect={false}
+                style={styles.inputStyle}
+                value={value}
+                onChangeText={handleChange}
+                editable={editable}
+            />
+        </View>
+    )
 }
 
 const styles = StyleSheet.create({
@@ -42,7 +44,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#71717A'
     },
-    containerStyle:{
+    containerStyle: {
         height: 42,
         flexDirection: 'row',
         alignItems: 'center',

@@ -9,6 +9,8 @@ import {
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query';
+import Toast from 'react-native-toast-message'
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 const queryClient = new QueryClient();
 
@@ -23,7 +25,10 @@ const App = () => {
               barStyle={Platform.OS == 'ios' ? 'light-content' : 'light-content'}
               backgroundColor={colors.tealishBlue}
               animated={true} />
-            <Navigation />
+            <GestureHandlerRootView>
+              <Navigation />
+            </GestureHandlerRootView>
+            <Toast />
           </SafeAreaProvider>
         </NativeBaseProvider>
       </QueryClientProvider>

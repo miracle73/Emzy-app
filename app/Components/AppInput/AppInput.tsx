@@ -18,7 +18,7 @@ interface Props {
 const AppInput: React.FC<Props> = ({ value, label, width, secureTextEntry, onChange, passwordIconShow, handleShowPassword, placeHolder }) => {
   return (
     <AppInputContainer width={width}>
-      <Input value={value} secureTextEntry={secureTextEntry} onChange={onChange} placeholder={placeHolder}></Input>
+      <Input value={value} secureTextEntry={secureTextEntry} onChangeText={onChange} placeholder={placeHolder}></Input>
       {
         passwordIconShow ?
           <>
