@@ -5,7 +5,7 @@ import PartnerGoalIcon from "../../Images/Dashboard/PartnerGoalIcon";
 export const MasterGoalData = [
     {
         Icon: HitGoalIcon,
-        Title: 'Hit your reading goal',
+        Title: 'Hit your goals',
         id: 1
     },
     {

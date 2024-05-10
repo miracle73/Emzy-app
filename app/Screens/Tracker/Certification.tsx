@@ -11,10 +11,11 @@ import SecondaryHeader from '../../Components/Header/SecondaryHeader'
 import { AccountabilityMemberContainer, AccountabilityMemberProfileContainer, AccountabilityMemberTitle, CertificationActionSheetBodyContainer, CertificationActionSheetBodyDescription, CertificationActionSheetBodyTitle, CertificationActionSheetContainer, CertificationCardContainer, CertificationCardEndLine, CertificationCardRowContainer, CertificationCardRowLeftTitle, CertificationCardRowRightTitle, CertificationCardWrapper, CertificationContainer, CertificationFooterContainer, CertificationFooterWrapper, CertificationHeaderContainer, CertificationHeaderTitle, CertificationTab, CertificationTabContainer, CertificationTabTitle, CertificationTabWrapper, CertificationWrapper, Icon, InfoContainer, InfoDescription, InfoTitle, OutcomeContainer, OutcomeTitle, ProfileImage } from './Tracker.styled'
 import { Props } from '../../Utils/utility_functions/utilityFunctions'
 
-const Certification: FC<Props> = ({ navigation }) => {
+const Certification: FC<Props> = ({ navigation, route }) => {
+    const data = route?.params
     const [selectedTeb, setSelectedTab] = useState<number>(KrptoniteTab.Money)
     const [isOpenActionSheet, setIsOpenActionSheet] = useState<boolean>(false)
-    
+
     const handleOpenActionSheet = () => {
         setIsOpenActionSheet(true)
     }
@@ -38,7 +39,7 @@ const Certification: FC<Props> = ({ navigation }) => {
                     <CertificationCardWrapper>
                         <CertificationCardRowContainer>
                             <CertificationCardRowLeftTitle>Criteria for success:</CertificationCardRowLeftTitle>
-                            <CertificationCardRowRightTitle>Complete PMP Course</CertificationCardRowRightTitle>
+                            <CertificationCardRowRightTitle>{data?.goal?.success_metrics}</CertificationCardRowRightTitle>
                         </CertificationCardRowContainer>
                         <CertificationCardRowContainer>
                             <CertificationCardRowLeftTitle>Importance:</CertificationCardRowLeftTitle>
@@ -46,11 +47,11 @@ const Certification: FC<Props> = ({ navigation }) => {
                         </CertificationCardRowContainer>
                         <CertificationCardRowContainer>
                             <CertificationCardRowLeftTitle>Timeline:</CertificationCardRowLeftTitle>
-                            <CertificationCardRowRightTitle>May 1st- may 25th</CertificationCardRowRightTitle>
+                            <CertificationCardRowRightTitle>{data?.goal?.due_date}</CertificationCardRowRightTitle>
                         </CertificationCardRowContainer>
                         <CertificationCardRowContainer>
                             <CertificationCardRowLeftTitle>Percentage</CertificationCardRowLeftTitle>
-                            <CertificationCardRowRightTitle>23%</CertificationCardRowRightTitle>
+                            <CertificationCardRowRightTitle>{data?.goal?.percentage_complete}%</CertificationCardRowRightTitle>
                         </CertificationCardRowContainer>
                     </CertificationCardWrapper>
                     <CertificationCardEndLine></CertificationCardEndLine>
@@ -72,17 +73,17 @@ const Certification: FC<Props> = ({ navigation }) => {
                 </InfoContainer>
                 <InfoContainer>
                     <InfoTitle>Deadline</InfoTitle>
-                    <InfoDescription>25th May, 2023</InfoDescription>
+                    <InfoDescription>{data?.goal?.due_date}</InfoDescription>
                 </InfoContainer>
                 <InfoContainer>
                     <InfoTitle>Reward</InfoTitle>
                     <InfoDescription>
-                        Here’s 3xp of dopamine for you!{`\n`}
+                        {data?.goal?.rewards?.length > 0 && data?.goal?.rewards[0]}{`\n`}
                         Complete your tasks to get more!
                     </InfoDescription>
                 </InfoContainer>
                 <OutcomeContainer>
-                    <OutcomeTitle>Does it  align with TOP Desired Outcome</OutcomeTitle>
+                    <OutcomeTitle>Does it align with TOP Desired Outcome</OutcomeTitle>
                     <Radio.Group defaultValue="1" name="myRadioGroup" accessibilityLabel="Pick your favorite number" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 10 }}>
                         <Radio value="1" my={1}>
                             First
@@ -108,9 +109,9 @@ const Certification: FC<Props> = ({ navigation }) => {
                 </CertificationTabContainer>
                 <CertificationFooterContainer>
                     <CertificationFooterWrapper>
-                        <AppButton buttonLabel={'Mark done for today'} onPress={() => setIsOpenActionSheet(true)}/>
+                        <AppButton buttonLabel={'Mark done for today'} onPress={() => setIsOpenActionSheet(true)} />
                     </CertificationFooterWrapper>
-                    <Icon style={{ position: 'relative' }} onPress={() => navigation.navigate('Chat')}>
+                    <Icon style={{ position: 'relative' }} onPress={() => navigation.navigate('Chat', route?.params)}>
                         <TrackerMessageIcon />
                     </Icon>
                 </CertificationFooterContainer>

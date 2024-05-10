@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useContext, useState } from 'react'
 import { Platform } from 'react-native'
 import { KeyboardAvoidingView, Modal } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
@@ -8,8 +8,12 @@ import AppTextArea from '../../Components/AppTextArea/AppTextArea'
 import BackArrow from '../../Images/SignUp/BackArrow'
 import { Icon, IdentityBackContainer, IdentityBodyContainer, IdentityContainer, IdentityFooterContainer, IdentityHeaderContainer, IdentityHeaderDescription, IdentityHeaderTitle, ModalBodyContainer, ModalContainer, ModalWrapper, ModelBodyDescription } from './Identity.styled'
 import { Props } from '../../Utils/utility_functions/utilityFunctions'
+import { AppContext } from '../../data_storage/contextApi/AppContext'
 
 const Identity: FC<Props> = ({ navigation }) => {
+    const { setGoalObject, goalObject } = useContext(AppContext)
+    const [identity, setIdentity] = useState('')
+
     const [isOpen, setIsOpen] = useState<boolean>(false)
     const handleOpenModel = () => {
         setIsOpen(!isOpen)
@@ -24,6 +28,7 @@ const Identity: FC<Props> = ({ navigation }) => {
                 behavior={Platform.OS == "ios" ? "padding" : "height"}
                 keyboardVerticalOffset={Platform.OS == "ios" ? 0 : 20}
                 enabled={Platform.OS === "ios" ? true : false}
+                style={{ width: '100%', height: '100%' }}
             >
                 <IdentityContainer>
                     <Modal
@@ -58,10 +63,14 @@ const Identity: FC<Props> = ({ navigation }) => {
                         <AppInfoButton buttonLabel={'Read More'} onPress={() => handleOpenModel()} />
                     </IdentityHeaderContainer>
                     <IdentityBodyContainer>
-                        <AppTextArea onChange={() => { }} />
+                        <AppTextArea onChange={(val) => { setIdentity(val) }} />
                     </IdentityBodyContainer>
                     <IdentityFooterContainer>
-                        <AppButton buttonLabel={'Continue'} onPress={() => {navigation.navigate('MetricSplashInitial') }} />
+                        <AppButton buttonLabel={'Continue'} onPress={() => {
+                            setGoalObject({ ...goalObject, ...{ successIdentity: identity } })
+                            console.log(identity)
+                            navigation.navigate('MetricSplashInitial')
+                        }} disabled={identity?.length < 3} />
                     </IdentityFooterContainer>
                 </IdentityContainer>
             </KeyboardAvoidingView>

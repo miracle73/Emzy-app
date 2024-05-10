@@ -340,6 +340,7 @@ export const AccountabilityTabTitle = styled.Text`
 font-family: Poppins;
 font-weight: 500;
 font-size: 14px;
+color: black;
 `
 export const AccountabilityDashboardBodyContainer = styled.ScrollView`
 padding: 20px;
@@ -393,13 +394,12 @@ font-size: 10px;
 color: ${({ selectedTab }) => selectedTab === AccountabilityTypeTab?.All ? '#FFFFFF' : '#3E7CD9'};
 `
 export const ChatContainer = styled.View`
-height: 100%;
+
 width: 100%;
 background: #ffffff;
-padding: 20px;
+padding-horizontal: 20px;
 display: flex;
 flex-direction: column;
-justify-content: space-between;
 gap: 20px;
 `
 export const ChatHeaderContainer = styled.View`
@@ -426,8 +426,12 @@ font-size: 16px;
 color: #000000;
 `
 export const ChatFooterContainer = styled.View`
-width: 90%;
-margin-bottom: 10px;
+width: 100%;
+margin-bottom: 8px;
+align-self: center;
+background-color: #FFFFFF;
+padding-horizontal: 30px;
+padding-bottom: 15px;
 `
 export const MessageContainer = styled.View`
 height: 70px;

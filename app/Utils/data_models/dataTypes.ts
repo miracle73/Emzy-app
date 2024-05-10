@@ -85,3 +85,37 @@ type DailyTasks = {
     for_date?: string,
     goal?: number
 }
+
+export type GoalSettingDataModel = {
+    topOutcome?: string,
+    desiredOutcome?: string,
+    successIdentity?: string,
+    successMetrics?: string,
+    rewards?: Array<string>,
+    commitmentLevel?: number,
+    duration?: number,
+    commitmentReason?: string,
+    triggers?: string,
+    emoAccountabilityPartner?: boolean,
+    accountabilityPartnerEmail?: string
+}
+
+export type AccountabilityPartnerModel = {
+    id?: number,
+    goal?: number,
+    date_created?: string,
+    date_accepted?: string,
+    status?: boolean,
+    partner?: Partner
+}
+
+type Partner = {
+    id?: number,
+    first_name?: string,
+    last_name?: string,
+    category?: string,
+    email?: string,
+    username?: string,
+    wallet_balance?: number,
+    profile_picture?: string
+}

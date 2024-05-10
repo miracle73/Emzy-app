@@ -72,3 +72,28 @@ export const getBiometricsEnabled = async () => {
     }
 }
 
+
+export const setProfileImage = async (url: string) => {
+    try {
+        await EncryptedStorage.setItem(
+            "profile_image",
+            JSON.stringify(url)
+        );
+    } catch (error) {
+    }
+}
+
+export const getProfileImage = async () => {
+    try {
+        const session = await EncryptedStorage.getItem("profile_image");
+
+        if (session !== undefined && session !== null) {
+            return JSON.parse(session);
+        } else {
+            return null
+        }
+    } catch (error) {
+        return null
+    }
+}
+

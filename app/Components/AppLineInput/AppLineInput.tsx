@@ -31,7 +31,7 @@ const AppLineInput: React.FC<Props> = ({ label, value, handleChange, secureTextE
 
 const styles = StyleSheet.create({
     inputStyle: {
-        color: '##161C2C',
+        color: '#161C2C',
         fontSize: 16,
         flex: 2,
         fontFamily: 'Poppins',

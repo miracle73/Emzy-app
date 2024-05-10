@@ -1,10 +1,6 @@
 import React from 'react'
 import { Platform } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { scale, verticalScale } from 'react-native-size-matters';
-import Header from '../Header/Header';
-import SignUp from '../../Screens/SignUp/SignUp';
-import Login from '../../Screens/Login/Login';
 import { TabContainer, TabIcon, TabLabel } from './Navigation.styled';
 import HomeActiveIcon from '../../Images/TabNavigation/HomeActiveIcon';
 import TrackerActiveIcon from '../../Images/TabNavigation/TrackerActiveIcon';
@@ -31,6 +27,8 @@ import Tracker from '../../Screens/Tracker/Tracker';
 import AddActivity from '../../Screens/Tracker/AddActivity';
 import Certification from '../../Screens/Tracker/Certification';
 import { colors } from '../../Utils/theme/colors';
+
+
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -85,9 +83,9 @@ const TrackerStack = ({ navigation, route }: any) => {
     }, [navigation]);
 
     React.useLayoutEffect(() => {
-        const isChatScreenFocused = getFocusedRouteNameFromRoute(route) === 'AddActivity' 
-        || getFocusedRouteNameFromRoute(route) === 'Certification' 
-        || getFocusedRouteNameFromRoute(route) === 'Chat';
+        const isChatScreenFocused = getFocusedRouteNameFromRoute(route) === 'AddActivity'
+            || getFocusedRouteNameFromRoute(route) === 'Certification'
+            || getFocusedRouteNameFromRoute(route) === 'Chat';
 
         // navigation.setOptions({
         //     tabBarStyle: {
@@ -102,7 +100,7 @@ const TrackerStack = ({ navigation, route }: any) => {
             <Stack.Screen name="Tracker" component={Tracker} options={{ headerShown: false }} initialParams={{ initialScreen: true }} />
             <Stack.Screen name="AddActivity" component={AddActivity} options={{ headerShown: false }} />
             <Stack.Screen name="Certification" component={Certification} options={{ headerShown: false }} />
-            <Stack.Screen name="Chat" component={Chat} options={{ headerShown: false }} />
+            {/* <Stack.Screen name="Chat" component={Chat} options={{ headerShown: false }} /> */}
         </Stack.Navigator>
     );
 };
@@ -134,7 +132,7 @@ const AccountabilityStack = ({ navigation, route }: any) => {
     return (
         <Stack.Navigator initialRouteName='Accountability'>
             <Stack.Screen name="Accountability" component={AccountabilityDashboard} options={{ headerShown: false }} initialParams={{ initialScreen: true }} />
-            <Stack.Screen name="Chat" component={Chat} options={{ headerShown: false, }} />
+            {/* <Stack.Screen name="Chat" component={Chat} options={{ headerShown: false, }} /> */}
         </Stack.Navigator>
     );
 };
@@ -147,7 +145,7 @@ const TabNavigation = () => {
                 headerShown: false,
                 tabBarStyle: {
                     backgroundColor: colors.white,
-                    height: Platform.OS == "android" ? 60 : 85,
+                    height: Platform.OS == "android" ? 70 : 95,
                     borderTopColor: colors.white
                 },
                 tabBarItemStyle: { marginBottom: 5 },
@@ -171,7 +169,7 @@ const TabNavigation = () => {
                             <TabIcon>
                                 {focused ? <HomeActiveIcon /> : <HomeInActiveIcon />}
                             </TabIcon>
-                            <TabLabel isFocused={focused}>Home</TabLabel>
+                            <TabLabel fontSize={10} isFocused={focused}>Home</TabLabel>
                         </TabContainer>
                     )
                 }}
@@ -187,7 +185,7 @@ const TabNavigation = () => {
                             <TabIcon>
                                 {focused ? <TrackerActiveIcon /> : <TrackerInActiveIcon />}
                             </TabIcon>
-                            <TabLabel isFocused={focused}>Tracker</TabLabel>
+                            <TabLabel fontSize={10} isFocused={focused}>Tracker</TabLabel>
                         </TabContainer>
                     )
                 }}
@@ -203,7 +201,7 @@ const TabNavigation = () => {
                             <TabIcon>
                                 {focused ? <RewardsActiveIcon /> : <RewardsInActiveIcon />}
                             </TabIcon>
-                            <TabLabel isFocused={focused}>Rewards</TabLabel>
+                            <TabLabel fontSize={10}  isFocused={focused}>Rewards</TabLabel>
                         </TabContainer>
                     )
                 }}
@@ -235,7 +233,7 @@ const TabNavigation = () => {
                             <TabIcon>
                                 {focused ? <MoreActiveIcon /> : <MoreInActiveIcon />}
                             </TabIcon>
-                            <TabLabel isFocused={focused}>More</TabLabel>
+                            <TabLabel fontSize={10} isFocused={focused}>More</TabLabel>
                         </TabContainer>
                     )
                 })}

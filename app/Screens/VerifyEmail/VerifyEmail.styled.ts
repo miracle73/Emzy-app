@@ -38,6 +38,7 @@ color: ${colors.riverRed};
 `
 export const VerifyEmailCodeInput = styled.TextInput<{ isActiveLength: number }>`
 height: 71px;
+color: ${colors.black};
 border-radius: 8px;
 border: 1px solid ${colors.white};
 background: ${colors.desertStorm};

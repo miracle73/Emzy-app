@@ -80,7 +80,11 @@ font-size: 14px;
 color: #000000;
 `
 export const DashboardMasterPickVideoContainer = styled.View`
-padding: 5px;
+padding: 0px;
+width:100%;
+height:220px;
+border-radius:5px;
+background-color: #27272A;
 `
 export const DashboardHeaderProfileContainer = styled.View`
 display: flex;
@@ -95,7 +99,7 @@ align-items: center;
 justify-content: space-between;
 width: 95%;
 `
-export const DashboardHeaderProfileRightContainer = styled.View`
+export const DashboardHeaderProfileRightContainer = styled.TouchableOpacity`
 `
 export const ProfileImage = styled.Image`
 width: 30px;

@@ -1,5 +1,6 @@
 import { Dimensions } from "react-native"
 import Toast from 'react-native-toast-message';
+import Clipboard from '@react-native-clipboard/clipboard';
 
 
 const dimensions = Dimensions.get('window')
@@ -11,6 +12,10 @@ export interface Props {
     navigation?: any,
     route?: any
 }
+
+export const copyToClipboard = (text: string | undefined) => {
+    Clipboard.setString(text ? text : "");
+};
 
 export const displayToast = (type: 'success' | 'error' | 'info', header: 'SUCCESS' | 'ERROR' | 'INFO', message: string, position: 'bottom' | 'top' = 'bottom') => {
     Toast.hide()

@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useContext, useState } from 'react'
 import { Platform } from 'react-native'
 import { KeyboardAvoidingView } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
@@ -8,12 +8,17 @@ import BackArrow from '../../Images/SignUp/BackArrow'
 import { TriggersTagData, TriggersTagEnum } from '../../Utils/Consts/Triggers'
 import { Icon, TriggersBackContainer, TriggersBodyContainer, TriggersBodyTitle, TriggersContainer, TriggersFooterContainer, TriggersHeaderContainer, TriggersHeaderTitle, TriggersTag, TriggersTagContainer, TriggersTagDescription, TriggersTagTitle, TriggersTagWrapper, TriggersWrapper } from './Triggers.styled'
 import { Props } from '../../Utils/utility_functions/utilityFunctions'
+import { AppContext } from '../../data_storage/contextApi/AppContext'
 
 const Triggers: FC<Props> = ({ navigation }) => {
+    const { goalObject, setGoalObject } = useContext(AppContext)
     const [selectedTag, setSelectedTag] = useState<string>(TriggersTagEnum.LackFinance)
+    const [customTrigger, setCustomTrigger] = useState('')
+
     const handleChangeTag = (item: string) => {
         setSelectedTag(item)
     }
+
     return (
         <LinearGradient
             colors={['#3E7CD9', 'white', 'white', '#3E7CD9']}
@@ -48,11 +53,21 @@ const Triggers: FC<Props> = ({ navigation }) => {
                                 </TriggersTagWrapper>
                             </TriggersTagContainer>
                             <TriggersBodyTitle>Are your triggers totally different?{`\n`}Type it below</TriggersBodyTitle>
-                            <AppTextArea onChange={() => { }} />
+                            <AppTextArea onChange={(val) => { setSelectedTag(''); setCustomTrigger(val) }} />
                         </TriggersBodyContainer>
                     </TriggersWrapper>
                     <TriggersFooterContainer>
-                        <AppButton buttonLabel={'Continue'} onPress={() => {navigation.navigate('AccountabilitySplashInitial') }} />
+                        <AppButton
+                            disabled={selectedTag.length <= 0 && customTrigger.length < 3}
+                            buttonLabel={'Continue'}
+                            onPress={() => {
+                                let data = ''
+                                if (selectedTag.length > 0) { data = data + selectedTag }
+                                if (customTrigger.length > 0 && selectedTag.length <= 0) { data = data + customTrigger }
+                                if (customTrigger.length > 0) { data = data + ", " + customTrigger }
+                                setGoalObject({ ...goalObject, ...{ triggers: data } })
+                                navigation.navigate('AccountabilitySplashInitial')
+                            }} />
                     </TriggersFooterContainer>
                 </TriggersContainer>
             </KeyboardAvoidingView>

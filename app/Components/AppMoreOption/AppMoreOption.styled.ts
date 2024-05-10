@@ -1,6 +1,6 @@
 import { styled } from "styled-components/native";
 
-export const AppMoreOptionContainer = styled.View`
+export const AppMoreOptionContainer = styled.TouchableOpacity`
 height: 72px;
 border-bottom-width: 1px;
 border-bottom-style: solid;

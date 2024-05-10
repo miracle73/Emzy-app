@@ -10,7 +10,7 @@ const SplashFirst: FC<Props> = ({ navigation }) => {
     getIsFirstLaunch().then((state) => {
       setTimeout(() => {
         if (state === false) {
-          navigation.navigate('LoginStack');
+          navigation.replace('LoginStack');
         } else { navigation.navigate('SplashSecond'); }
       }, 1000);
     })

@@ -6,7 +6,7 @@ import { VideoConstantsData } from '../../Utils/data_models/dataTypes';
 import { colors } from '../../Utils/theme/colors';
 import { Vimeo } from 'react-native-vimeo-iframe'
 
-const videoCallbacks = {
+ export const videoCallbacks = {
     timeupdate: (data: any) => { },
     play: (data: any) => { },
     pause: (data: any) => { },

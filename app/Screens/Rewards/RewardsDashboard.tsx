@@ -1,5 +1,5 @@
 import { Slider } from 'native-base'
-import React from 'react'
+import React, { useContext } from 'react'
 import { Text } from 'react-native'
 import DopamineCoinIcon from '../../Images/Dashboard/DopamineCoinIcon'
 import RewardGiftIcon from '../../Images/Rewards/RewardGiftIcon'
@@ -26,9 +26,11 @@ import {
   RewardsDashboardHeaderContainer
 } from './Rewards.styled'
 import StyledRoot from '../../Components/StyledRoot'
+import { AppContext } from '../../data_storage/contextApi/AppContext'
+import { formatDecimalAmount } from '../../Utils/utility_functions/utilityFunctions'
 
 const RewardsDashboard = () => {
-
+  const { userWholeDetails, userLoginData } = useContext(AppContext)
 
   return (
     <StyledRoot
@@ -38,7 +40,7 @@ const RewardsDashboard = () => {
           <RewardsDashboardBalanceContainer>
             <RewardsDashboardBalanceWrapper>
               <DopamineCoinIcon />
-              <RewardsDashboardBalance>5,000</RewardsDashboardBalance>
+              <RewardsDashboardBalance>{formatDecimalAmount(String(userWholeDetails?.data?.wallet_balance ?? '0.0'))}</RewardsDashboardBalance>
             </RewardsDashboardBalanceWrapper>
             <RewardsDashboardBalanceTitle>Dopamine coin balance</RewardsDashboardBalanceTitle>
           </RewardsDashboardBalanceContainer>

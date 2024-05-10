@@ -81,7 +81,7 @@ display: flex;
 flex-direction: column;
 gap: 20px;
 `
-export const DesiresAreaContainer = styled.View`
+export const DesiresAreaContainer = styled.TouchableOpacity`
 height: 42px;
 width: 100%;
 display: flex;

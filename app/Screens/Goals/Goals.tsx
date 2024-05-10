@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useContext, useState } from 'react'
 import { Alert, KeyboardAvoidingView, Modal, Platform, Text, View } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import AppButton from '../../Components/AppButton/AppButton'
@@ -8,9 +8,13 @@ import BackArrow from '../../Images/SignUp/BackArrow'
 import { GoalBackContainer, GoalBodyContainer, GoalFooterContainer, GoalHeaderContainer, GoalHeaderDescription, GoalHeaderTitle, GoalsContainer, Icon, ModalBodyContainer, ModalContainer, ModalWrapper, ModelBodyDescription } from './Goals.styled'
 import StyledRoot from '../../Components/StyledRoot'
 import { Props } from '../../Utils/utility_functions/utilityFunctions'
+import { AppContext } from '../../data_storage/contextApi/AppContext'
 
 
 const Goals: FC<Props> = ({ navigation }) => {
+    const { setGoalObject, goalObject } = useContext(AppContext)
+    const [goal, setGoal] = useState<string>('')
+
     const [isOpen, setIsOpen] = useState<boolean>(false)
     const handleOpenModel = () => {
         setIsOpen(!isOpen)
@@ -55,10 +59,13 @@ const Goals: FC<Props> = ({ navigation }) => {
                     <AppInfoButton buttonLabel={'Read More'} onPress={() => handleOpenModel()} />
                 </GoalHeaderContainer>
                 <GoalBodyContainer>
-                    <AppTextArea onChange={() => { }} />
+                    <AppTextArea onChange={(val) => { setGoal(val) }} />
                 </GoalBodyContainer>
                 <GoalFooterContainer>
-                    <AppButton buttonLabel={'Continue'} onPress={() => { navigation.navigate('IdentitySplashInitial') }} />
+                    <AppButton buttonLabel={'Continue'} onPress={() => {
+                        setGoalObject({ ...goalObject, ...{ desiredOutcome: goal } })
+                        navigation.navigate('IdentitySplashInitial')
+                    }} disabled={goal.trim().length < 3} />
                 </GoalFooterContainer>
             </GoalsContainer>
         </LinearGradient>
