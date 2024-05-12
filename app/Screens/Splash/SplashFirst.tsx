@@ -1,29 +1,32 @@
-import { useNavigation } from '@react-navigation/native'
-import React, { useEffect } from 'react'
+import React, { FC, useEffect } from 'react'
 import LinearGradient from 'react-native-linear-gradient'
 import { SplashFirstContainer } from './Splash.styled'
+import { Props } from '../../Utils/utility_functions/utilityFunctions'
+import { getIsFirstLaunch } from '../../data_storage/local_storage/LocalStorage'
 
-const SplashFirst = () => {
-  const navigation = useNavigation();
+const SplashFirst: FC<Props> = ({ navigation }) => {
+
   useEffect(() => {
-    // Use setTimeout to delay the navigation
-    const timeoutId = setTimeout(() => {
-      // Navigate to another screen after 2 seconds
-      navigation.navigate('SplashSecond');
-    }, 1000);
+    getIsFirstLaunch().then((state) => {
+      setTimeout(() => {
+        if (state === false) {
+          navigation.navigate('LoginStack');
+        } else { navigation.navigate('SplashSecond'); }
+      }, 1000);
+    })
+      .catch(() => { navigation.navigate('LoginStack'); })
+  }, []);
 
-    // Clear the timeout if the component is unmounted
-    return () => clearTimeout(timeoutId);
-  }, [navigation]);
+
   return (
     <LinearGradient
-        colors={['#c3bd99', '#ffffff', '#ffffff']}
-        start={{ x: 0.3, y: 0.3 }}
-        end={{ x: 1.5, y: 2 }}
+      colors={['#c3bd99', '#ffffff', '#ffffff']}
+      start={{ x: 0.3, y: 0.3 }}
+      end={{ x: 1.5, y: 2 }}
     >
-        <SplashFirstContainer>
+      <SplashFirstContainer>
 
-        </SplashFirstContainer>
+      </SplashFirstContainer>
     </LinearGradient>
   )
 }

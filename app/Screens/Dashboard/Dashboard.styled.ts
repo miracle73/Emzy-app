@@ -1,4 +1,5 @@
 import { styled } from "styled-components/native";
+import { colors } from "../../Utils/theme/colors";
 
 export const DashboardContainer = styled.ScrollView`
 height: 100%;
@@ -7,12 +8,12 @@ display: flex;
 flex-direction: column;
 `
 export const DashboardHeaderContainer = styled.View`
-height: 327px;
+minimum-height: 50px;
 width: 100%;
 background-color: #3E7CD9;
 border-bottom-left-radius: 22px;
 border-bottom-right-radius: 22px;
-padding: 10px 10px 20px 10px;
+padding: 10px 10px 23px 10px;
 display: flex;
 flex-direction: column;
 gap: 30px;
@@ -29,7 +30,7 @@ flex-direction: column;
 gap: 5px;
 `
 export const DashboardMasterGoalTitle = styled.Text`
-font-family: Poppins;
+font-family: Poppins Regular;
 font-weight: 500;
 font-size: 14px;
 color: #000000;
@@ -41,8 +42,8 @@ flex-wrap: wrap;
 gap: 15px;
 padding: 5px;
 `
-export const MasterGoalContainer = styled.View`
-width: 151px;
+export const MasterGoalContainer = styled.TouchableOpacity`
+width: 48%;
 height: 56px;
 border-radius: 8px;
 background-color: #FFFFFF;
@@ -53,10 +54,16 @@ gap: 10px;
 justify-content: space-between;
 padding: 0px 10px 0px 10px;
 elevation: 7;
+shadow-color: ${colors.black};
+shadow-offset: { width: 0; height: 1; };
+shadow-opacity: 0.4;
+shadow-radius: 2px;
+margin-right: 15px;
+margin-bottom: 10px;
 `
 export const MasterGoalTitle = styled.Text`
 width: 109px;
-font-family: Poppins;
+font-family: Poppins Regular;
 font-weight: 300;
 font-size: 12px;
 color: #000000;
@@ -67,7 +74,7 @@ flex-direction: column;
 gap: 5px;
 `
 export const DashboardMasterPickTitle = styled.Text`
-font-family: Poppins;
+font-family: Poppins Regular;
 font-weight: 500;
 font-size: 14px;
 color: #000000;
@@ -85,7 +92,8 @@ export const DashboardHeaderProfileLeftContainer = styled.View`
 display: flex;
 flex-direction: row;
 align-items: center;
-gap: 10px;
+justify-content: space-between;
+width: 95%;
 `
 export const DashboardHeaderProfileRightContainer = styled.View`
 `
@@ -93,9 +101,10 @@ export const ProfileImage = styled.Image`
 width: 30px;
 height: 30px;
 border-radius: 20px;
+background-color: #FFFFFF;
 `
 export const ProfileTitle = styled.Text`
-font-family: Poppins;
+font-family: Poppins Regular;
 font-weight: 600;
 font-size: 16px;
 color: #FFFFFF;
@@ -106,7 +115,7 @@ flex-direction: column;
 gap: 10px;
 `
 export const DopamineCoinTitle = styled.Text`
-font-family: Poppins;
+font-family: Poppins Regular;
 font-weight: 400;
 font-size: 16px;
 color: #EDEDED;
@@ -118,7 +127,7 @@ align-items: center;
 gap: 10px;
 `
 export const DopamineCoinCount = styled.Text`
-font-family: Nunito;
+font-family: Nunito Regular;
 font-weight: 700;
 font-size: 38px;
 color: #FFFFFF;
@@ -139,9 +148,9 @@ height: 100%;
 background: #D2B000;
 border-radius: 20px;
 padding: 5px 0px 5px 10px;
-/* box-sizing: border-box;
-border-top-left-radius: 20px;
-border-bottom-left-radius: 20px; */
+border-top-right-raduis: 50px;
+border-bottom-right-raduis: 50px;
+border-bottom-color: red;
 `
 export const FinancialCardRightContainer = styled.View`
 width: 50%;
@@ -163,7 +172,7 @@ margin-left: -25px;
 z-index: 10;
 `
 export const FinancialCardLeftHeading = styled.Text`
-font-family: Nunito;
+font-family: Nunito Regular;
 font-weight: 500;
 font-size: 14px;
 color: #FFFFFF;
@@ -182,7 +191,7 @@ flex-direction: column;
 width: 100%;
 `
 export const FinancialCardLeftContentTitle = styled.Text`
-font-family: Nunito;
+font-family: Nunito Regular;
 font-weight: 600;
 font-size: 16px;
 color: #FFFFFF;

@@ -1,18 +1,24 @@
-import React from 'react'
-import { IdentitySplashInitialContainer, IdentitySplashInitialFooterContainer, IdentitySplashInitialFooterTitle, IdentitySplashInitialHeaderContainer, IdentitySplashInitialHeaderTitle } from './Identity.styled'
+import React, { FC } from 'react'
+import StyledRoot from '../../Components/StyledRoot';
+import { Props } from '../../Utils/utility_functions/utilityFunctions';
+import VideoPlayerComponent from '../../Components/video_player/VideoPlayerComponent';
 
-const image = {uri: 'https://legacy.reactjs.org/logo-og.png'};
 
-const IdentitySplashInitial = () => {
+const IdentitySplashInitial: FC<Props> = ({ navigation }) => {
+
   return (
-    <IdentitySplashInitialContainer source={image} resizeMode="cover">
-        <IdentitySplashInitialHeaderContainer>
-            <IdentitySplashInitialHeaderTitle>My Success Identity</IdentitySplashInitialHeaderTitle>
-        </IdentitySplashInitialHeaderContainer>
-        <IdentitySplashInitialFooterContainer>
-            <IdentitySplashInitialFooterTitle>What do you need to be to achieve this outcome</IdentitySplashInitialFooterTitle>
-        </IdentitySplashInitialFooterContainer>
-    </IdentitySplashInitialContainer>
+    <StyledRoot
+      enableScroll={false}
+      useScrollFlex
+      style={{ paddingHorizontal: 0 }}
+      safeAreaStyle={{ backgroundColor: '#474137' }}
+    >
+      <VideoPlayerComponent
+        onContinue={() => navigation.navigate('Identity')}
+        headerText={'My Success Identity'}
+        footerText={'What do you need to be to achieve this outcome'}
+      />
+    </StyledRoot>
   )
 }
 

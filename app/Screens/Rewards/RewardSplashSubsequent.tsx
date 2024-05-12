@@ -1,18 +1,24 @@
-import React from 'react'
-import { RewardSplashSubsequentContainer, RewardSplashSubsequentFooterContainer, RewardSplashSubsequentFooterTitle, RewardSplashSubsequentHeaderContainer, RewardSplashSubsequentHeaderTitle } from './Rewards.styled'
+import React, { FC } from 'react'
+import StyledRoot from '../../Components/StyledRoot';
+import { Props } from '../../Utils/utility_functions/utilityFunctions';
+import VideoPlayerComponent from '../../Components/video_player/VideoPlayerComponent';
 
-const image = {uri: 'https://legacy.reactjs.org/logo-og.png'};
 
-const RewardSplashSubsequent = () => {
+const RewardSplashSubsequent: FC<Props> = ({ navigation }) => {
+
   return (
-    <RewardSplashSubsequentContainer source={image} resizeMode="cover">
-        <RewardSplashSubsequentHeaderContainer>
-            <RewardSplashSubsequentHeaderTitle>My Reward</RewardSplashSubsequentHeaderTitle>
-        </RewardSplashSubsequentHeaderContainer>
-        <RewardSplashSubsequentFooterContainer>
-            <RewardSplashSubsequentFooterTitle>Get that Dopamine!</RewardSplashSubsequentFooterTitle>
-        </RewardSplashSubsequentFooterContainer>
-    </RewardSplashSubsequentContainer>
+    <StyledRoot
+      enableScroll={false}
+      useScrollFlex
+      style={{ paddingHorizontal: 0 }}
+      safeAreaStyle={{ backgroundColor: '#474137' }}
+    >
+      <VideoPlayerComponent
+        onContinue={() => navigation.navigate('Rewards')}
+        headerText={'My Reward'}
+        footerText={'Get that Dopamine!'}
+      />
+    </StyledRoot>
   )
 }
 

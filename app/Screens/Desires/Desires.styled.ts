@@ -52,6 +52,7 @@ export const DesiresContainer = styled.View`
 height: 100%;
 width: 100%;
 padding: 20px;
+padding-top: 50px;
 `
 export const DesiresHeaderContainer = styled.View`
 display: flex;

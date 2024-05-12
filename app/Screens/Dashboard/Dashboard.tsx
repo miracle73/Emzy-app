@@ -1,96 +1,206 @@
-import React, { useEffect, useState } from 'react'
-import { StyleSheet } from 'react-native'
-import HitGoalIcon from '../../Images/Dashboard/HitGoalIcon'
-import { DashboardBodyContainer, DashboardContainer, DashboardHeaderContainer, DashboardHeaderProfileContainer, DashboardHeaderProfileLeftContainer, DashboardHeaderProfileRightContainer, DashboardMasterGoalContainer, DashboardMasterGoalTitle, DashboardMasterGoalWrapper, DashboardMasterPickContainer, DashboardMasterPickTitle, DashboardMasterPickVideoContainer, DopamineCoinContainer, DopamineCoinCount, DopamineCoinTitle, DopamineCoinWrapper, FinancialCardContainer, FinancialCardLeftContainer, FinancialCardLeftContentTitle, FinancialCardLeftContentTitleContainer, FinancialCardLeftHeading, FinancialCardRightContainer, FinancialCardRightContentTitle, FinancialCardRightContentTitleContainer, FinancialCardRightHeading, FinancialImage, MasterGoalContainer, MasterGoalTitle, ProfileImage, ProfileTitle } from './Dashboard.styled'
+import React, { FC, useCallback, useState, useContext, useMemo } from 'react'
+import { StyleSheet, ImageBackground, Text, FlatList } from 'react-native'
+import {
+    DashboardBodyContainer,
+    DashboardHeaderContainer,
+    DashboardHeaderProfileLeftContainer,
+    DashboardHeaderProfileRightContainer,
+    DashboardMasterGoalContainer,
+    DashboardMasterGoalTitle,
+    DashboardMasterGoalWrapper,
+    DashboardMasterPickContainer,
+    DashboardMasterPickTitle,
+    DashboardMasterPickVideoContainer,
+    DopamineCoinContainer,
+    DopamineCoinCount,
+    DopamineCoinTitle,
+    DopamineCoinWrapper, FinancialImage,
+    MasterGoalContainer,
+    MasterGoalTitle,
+    ProfileImage,
+    ProfileTitle
+} from './Dashboard.styled'
 import Video from 'react-native-video';
 import NotificationIcon from '../../Images/Dashboard/NotificationIcon';
 import DopamineCoinIcon from '../../Images/Dashboard/DopamineCoinIcon';
 import { MasterGoalData } from '../../Utils/Consts/Dashboard';
+import StyledRoot from '../../Components/StyledRoot';
+import { colors } from '../../Utils/theme/colors';
+import CenterIcon from '../../Images/Dashboard/emzy_home.png'
+import { View } from 'native-base';
+import { Props } from '../../Utils/utility_functions/utilityFunctions';
+import { useFocusEffect } from '@react-navigation/core';
+import { useQuery } from '@tanstack/react-query';
+import { AppContext } from '../../data_storage/contextApi/AppContext';
+import { useDashboardService, useDashboardVideoConstants } from './dashboardService';
+import { formatDecimalAmount } from '../../Utils/utility_functions/utilityFunctions';
+import DashboardCarousel from './DashboardCarousel';
+import { DashboardDataModel, VideoConstantsData } from '../../Utils/data_models/dataTypes';
 
-const Dashboard = () => {
+const Dashboard: FC<Props> = ({ navigation }) => {
+    const { userWholeDetails, userLoginData } = useContext(AppContext)
+    const [refetchUserDetails, isRefetchingUserDetails, dashboardData, refetchDashboardData, isRefetchingDashboardData] = useDashboardService()
+    const dashboardValues: DashboardDataModel = useMemo(() => { return dashboardData as DashboardDataModel }, [dashboardData])
+    const [videoConstants, refetchVideoConstants, isRefetchingVideoConstants] = useDashboardVideoConstants()
     const [paused, setPaused] = useState<boolean>(false)
+
     const handleChangePaused = () => {
-        setPaused(!paused)
+        // setPaused(!paused)
     }
-  return (
-    <DashboardContainer>
-        <DashboardHeaderContainer>
-            <DashboardHeaderProfileContainer>
+
+    useFocusEffect(useCallback(() => {
+        return () => handleChangePaused()
+    }, []))
+
+    
+    return (
+        <StyledRoot
+            safeAreaStyle={{ backgroundColor: colors.tealishBlue }}
+            style={{ paddingHorizontal: 0 }}
+            Header={() => (
                 <DashboardHeaderProfileLeftContainer>
-                    <ProfileImage source={{uri: 'https://reactnative.dev/img/tiny_logo.png'}}></ProfileImage>
-                    <ProfileTitle>Hello, Edward Victorhez!</ProfileTitle>
+                    <ProfileImage source={{ uri: userWholeDetails?.data?.profile_picture ?? userLoginData?.data?.profile_picture }}></ProfileImage>
+                    <ProfileTitle>Hello, {userWholeDetails?.data?.first_name ?? userLoginData?.data?.first_name} {userWholeDetails?.data?.last_name ?? userLoginData?.data?.last_name}!</ProfileTitle>
+                    <DashboardHeaderProfileRightContainer>
+                        <NotificationIcon />
+                    </DashboardHeaderProfileRightContainer>
                 </DashboardHeaderProfileLeftContainer>
-                <DashboardHeaderProfileRightContainer>
-                    <NotificationIcon />
-                </DashboardHeaderProfileRightContainer>
-            </DashboardHeaderProfileContainer>
-            <DopamineCoinContainer>
-                <DopamineCoinTitle>Available  Dopamine Coin</DopamineCoinTitle>
-                <DopamineCoinWrapper>
-                    <DopamineCoinIcon />
-                    <DopamineCoinCount>5,000</DopamineCoinCount>
-                </DopamineCoinWrapper>
-            </DopamineCoinContainer>
-            <FinancialCardContainer>
-                <FinancialImage source={require('../../Images/Dashboard/Rectangle_41.png')}></FinancialImage>
-                <FinancialCardLeftContainer>
-                    <FinancialCardLeftHeading>Financial freedom</FinancialCardLeftHeading>
-                    <FinancialCardLeftContentTitleContainer>
-                        <FinancialCardLeftContentTitle>Criteria for success:</FinancialCardLeftContentTitle>
-                        <FinancialCardLeftContentTitle>Importance:</FinancialCardLeftContentTitle>
-                        <FinancialCardLeftContentTitle>Reward system:</FinancialCardLeftContentTitle>
-                        <FinancialCardLeftContentTitle>Status:</FinancialCardLeftContentTitle>
-                    </FinancialCardLeftContentTitleContainer>
-                </FinancialCardLeftContainer>
-                <FinancialCardRightContainer>
-                    <FinancialCardRightHeading>in 2023</FinancialCardRightHeading>
-                    <FinancialCardRightContentTitleContainer>
-                        <FinancialCardRightContentTitle>Financial freedom in 2023</FinancialCardRightContentTitle>
-                        <FinancialCardRightContentTitle>Top priority</FinancialCardRightContentTitle>
-                        <FinancialCardRightContentTitle>Free shopping coupons</FinancialCardRightContentTitle>
-                        <FinancialCardRightContentTitle>50%</FinancialCardRightContentTitle>
-                    </FinancialCardRightContentTitleContainer>
-                </FinancialCardRightContainer>
-            </FinancialCardContainer>
-        </DashboardHeaderContainer>
-        <DashboardBodyContainer>
-            <DashboardMasterGoalContainer>
-                <DashboardMasterGoalTitle>Master Your goal</DashboardMasterGoalTitle>
-                <DashboardMasterGoalWrapper>
-                    {MasterGoalData?.map((item) => {
-                        const { Icon } = item;
-                        return (
-                            <MasterGoalContainer>
-                                <Icon />
-                                <MasterGoalTitle>{item?.Title}</MasterGoalTitle>
-                            </MasterGoalContainer>
-                        )
-                    })}
-                </DashboardMasterGoalWrapper>
-            </DashboardMasterGoalContainer>
-            <DashboardMasterPickContainer>
-                <DashboardMasterPickTitle>Hot picks</DashboardMasterPickTitle>
-                <DashboardMasterPickVideoContainer>
-                    <Video
-                        source={require('../../Video/HotPicksVideo.mp4')}
-                        style={styles.video}
-                        resizeMode="cover"
-                        paused={paused}
-                        repeat
-                        onTouchStart={() => handleChangePaused()}
-                    />
-                </DashboardMasterPickVideoContainer>
-            </DashboardMasterPickContainer>
-        </DashboardBodyContainer>
-    </DashboardContainer>
-  )
+            )}
+        >
+
+            <DashboardHeaderContainer>
+                <DopamineCoinContainer>
+                    <DopamineCoinTitle>Available Dopamine Coin</DopamineCoinTitle>
+                    <DopamineCoinWrapper>
+                        <DopamineCoinIcon />
+                        <DopamineCoinCount>{formatDecimalAmount(String(userWholeDetails?.data?.wallet_balance ?? '0.0'))}</DopamineCoinCount>
+                    </DopamineCoinWrapper>
+                </DopamineCoinContainer>
+                <ImageBackground
+                    source={CenterIcon}
+                    style={styles.centerBg}
+                    imageStyle={styles.imgStyle}
+                >
+                    <View style={styles.freedomView}>
+                        <Text style={styles.freedom}>Financial freedom</Text>
+                        <Text style={[styles.freedom, { color: '#D2B000' }]}>in 2023</Text>
+                    </View>
+                    <View style={styles.centerItemView}>
+                        <View style={{ justifyContent: 'center', width: '45%', paddingLeft: 12 }}>
+                            <Text style={styles.centerItemsLeft}>Criteria for success:</Text>
+                            <Text style={styles.centerItemsLeft}>Importance:</Text>
+                            <Text style={styles.centerItemsLeft}>Reward system:</Text>
+                            <Text style={styles.centerItemsLeft}>Status:</Text>
+                        </View>
+                        <FinancialImage source={require('../../Images/Dashboard/Rectangle_41.png')}></FinancialImage>
+
+                        <View style={{ alignItems: 'flex-end', justifyContent: 'center', width: '45%', paddingRight: 12 }}>
+                            <Text style={[styles.centerItemsRight, { fontSize: 12 }]}>Financial freedom in 2023</Text>
+                            <Text style={styles.centerItemsRight}>Top priority</Text>
+                            <Text style={styles.centerItemsRight}>{dashboardValues.goal?.rewards ? dashboardValues.goal?.rewards[0] : ""}</Text>
+                            <Text style={styles.centerItemsRight}>{dashboardValues?.goal?.percentage_complete ?? "0"}%</Text>
+                        </View>
+                    </View>
+                </ImageBackground>
+            </DashboardHeaderContainer>
+            <DashboardBodyContainer>
+                <DashboardMasterGoalContainer>
+                    <DashboardMasterGoalTitle>Master Your goal</DashboardMasterGoalTitle>
+                    <DashboardMasterGoalWrapper>
+                        <FlatList
+                            style={{ width: '100%', padding: 10 }}
+                            scrollEnabled={false}
+                            numColumns={2}
+                            data={MasterGoalData}
+                            renderItem={({ item }) => {
+                                const { Icon } = item;
+                                return (
+                                    <MasterGoalContainer onPress={() => {
+                                        if (item?.id == 1) navigation.navigate('')
+                                        if (item?.id == 2) navigation.navigate('Tracker')
+                                        if (item?.id == 3) navigation.navigate('Accountability')
+                                    }} activeOpacity={0.6}>
+                                        <Icon />
+                                        <MasterGoalTitle>{item?.Title}</MasterGoalTitle>
+                                    </MasterGoalContainer>
+                                )
+                            }}
+                        />
+                    </DashboardMasterGoalWrapper>
+                </DashboardMasterGoalContainer>
+                <DashboardMasterPickContainer>
+                    {videoConstants?.length > 0 &&
+                        <>
+                            <DashboardMasterPickTitle>Hot picks</DashboardMasterPickTitle>
+                            <DashboardMasterPickVideoContainer>
+                                <DashboardCarousel
+                                    data={videoConstants as Array<VideoConstantsData>}
+                                />
+                            </DashboardMasterPickVideoContainer>
+                        </>
+                    }
+                </DashboardMasterPickContainer>
+            </DashboardBodyContainer>
+        </StyledRoot>
+    )
 }
 
 const styles = StyleSheet.create({
     video: {
-      height: 201,
-      width: '100%',
-      borderRadius: 10
+        height: 201,
+        width: '100%',
+        borderRadius: 10,
+        backgroundColor: colors.balticSea
+    },
+    freedom: {
+        color: colors.white,
+        fontSize: 14,
+        fontWeight: '600',
+        lineHeight: 20,
+        fontFamily: 'Nunito Regular',
+        marginLeft: -50
+    },
+    centerItemsLeft: {
+        color: colors.white,
+        fontSize: 14,
+        fontWeight: '600',
+        lineHeight: 20,
+        fontFamily: 'Nunito Regular',
+    },
+    centerItemsRight: {
+        color: colors.balticSea,
+        fontSize: 12,
+        fontWeight: '600',
+        lineHeight: 20,
+        fontFamily: 'Nunito Regular',
+        textAlign: 'right'
+    },
+    centerBg: {
+        width: '100%',
+        height: 128,
+        borderRadius: 20,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    centerItemView: {
+        width: '100%',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        flexDirection: 'row'
+    },
+    imgStyle: {
+        width: '100%',
+        height: '100%',
+        borderRadius: 20,
+        resizeMode: 'cover'
+    },
+    freedomView: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        width: '40%',
+        marginRight: 'auto',
+        marginLeft: 'auto'
     }
 });
 

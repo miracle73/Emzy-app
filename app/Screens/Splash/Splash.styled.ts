@@ -1,4 +1,5 @@
 import { styled } from "styled-components/native";
+import { colors } from "../../Utils/theme/colors";
 
 export const SplashFirstContainer = styled.View`
 height: 100%;
@@ -7,6 +8,8 @@ display: flex;
 flex-direction: column;
 align-items: center;
 justify-content: space-between;
+padding-top: 40px;
+padding-bottom: 45px;
 `
 export const SplashSecondContainer = styled(SplashFirstContainer)`
 `
@@ -19,18 +22,19 @@ align-items: center;
 gap: 10px;
 `
 export const SplashSecondBodyTitle = styled.Text`
-font-family: Nunito;
+font-family: Nunito Regular;
 font-weight: 700;
 font-size: 32px;
 text-align: center;
-color: #3498DB;
+color: ${colors.cyanBlue};
+margin-bottom: 15px;
 `
 export const SplashSecondBodyDescription = styled.Text`
-font-family: Inter;
+font-family: Inter Light;
 font-weight: 500;
 font-size: 18px;
 text-align: center;
-color: #6B737A;
+color: ${colors.paleSky};
 `
 export const SplashFooterContainer = styled.View`
 display: flex;
@@ -42,6 +46,7 @@ width: 100%;
 export const SplashThirdContainer = styled(SplashFirstContainer)`
 `
 export const SplashThirdHeaderContainer = styled(SplashSecondHeaderContainer)`
+align-self: flex-start;
 `
 export const SplashThirdBodyContainer = styled(SplashSecondBodyContainer)`
 `
@@ -74,23 +79,23 @@ padding-right: 20px;
 export const SplashFooterLeftDot = styled.View<{ isActive?: boolean, isFinal?: boolean }>`
 width: 10px;
 height: 10px;
-background: ${({ isActive, isFinal }) => isActive ? '#D2B000' : isFinal ? '#000000' : '#D9D9D9'};
+background: ${({ isActive, isFinal }) => isActive ? colors.mustard : isFinal ? colors.black : colors.lightGray};
 border-radius: 5px;
 `
 export const SplashForthFooterButton = styled.TouchableOpacity`
 width: 150px;
-height: 70px;
+height: 65px;
 border-radius: 16px 0px 0px 0px;
-background: #3E7CD9;
+background: ${colors.tealishBlue};
 display: flex;
 flex-direction: row;
 align-items: center;
 justify-content: center;
 `
 export const SplashForthFooterButtonTitle = styled.Text`
-font-family: Inter;
+font-family: Inter Regular;
 font-weight: 700;
 font-size: 18px;
 text-align: center;
-color: #FFFFFF;
+color: ${colors.white};
 `

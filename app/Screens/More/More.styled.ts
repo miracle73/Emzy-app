@@ -43,6 +43,7 @@ export const ProfileImage = styled.Image`
 width: 72px;
 height: 72px;
 border-radius: 20px;
+background-color :#191716;
 `
 export const ProfileName = styled.Text`
 font-family: Nunito;

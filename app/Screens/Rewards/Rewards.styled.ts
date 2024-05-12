@@ -18,7 +18,7 @@ align-items: center;
 justify-content: center;
 gap: 20px;
 margin-bottom: 40px;
-padding: 0px 20px 0px 20px;
+padding: 0px 20px 10px 20px;
 width: 100%;
 text-align: center;
 width: 100%;
@@ -160,6 +160,7 @@ font-size: 16px;
 color: #52525B;
 `
 export const RewardsFooterContainer = styled.View`
+margin-bottom:25px;
 `
 export const RewardsDashboardContainer = styled.View`
 height: 100%;
@@ -225,11 +226,12 @@ gap: 20px;
 padding: 20px 20px 0px 20px;
 `
 export const RewardsDashboardBodyTitle = styled.Text`
-font-family: Nunito;
+font-family: Nunito Regular;
 font-weight: 500;
 font-size: 24px;
 text-align: center;
 color: #3E7CD9;
+margin-top: 20px;
 `
 export const RewardsDashboardBodyWrapper = styled.ScrollView`
 height: 100%;

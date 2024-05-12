@@ -1,18 +1,24 @@
-import React from 'react'
-import { MetricSplashInitialContainer, MetricSplashInitialFooterContainer, MetricSplashInitialFooterTitle, MetricSplashInitialHeaderContainer, MetricSplashInitialHeaderTitle } from './Metrics.styled'
+import React, { FC } from 'react'
+import StyledRoot from '../../Components/StyledRoot';
+import { Props } from '../../Utils/utility_functions/utilityFunctions';
+import VideoPlayerComponent from '../../Components/video_player/VideoPlayerComponent';
 
-const image = {uri: 'https://legacy.reactjs.org/logo-og.png'};
 
-const MetricSplashInitial = () => {
+const MetricSplashInitial: FC<Props> = ({ navigation }) => {
+
   return (
-    <MetricSplashInitialContainer source={image} resizeMode="cover">
-      <MetricSplashInitialHeaderContainer>
-        <MetricSplashInitialHeaderTitle>Success Metrics</MetricSplashInitialHeaderTitle>
-      </MetricSplashInitialHeaderContainer>
-      <MetricSplashInitialFooterContainer>
-        <MetricSplashInitialFooterTitle>Explanation of success criteria</MetricSplashInitialFooterTitle>
-      </MetricSplashInitialFooterContainer>
-    </MetricSplashInitialContainer>
+    <StyledRoot
+      enableScroll={false}
+      useScrollFlex
+      style={{ paddingHorizontal: 0 }}
+      safeAreaStyle={{ backgroundColor: '#474137' }}
+    >
+      <VideoPlayerComponent
+        onContinue={() => navigation.navigate('Metrics')}
+        headerText={'Success Metrics'}
+        footerText={'Explanation of success criteria'}
+      />
+    </StyledRoot>
   )
 }
 

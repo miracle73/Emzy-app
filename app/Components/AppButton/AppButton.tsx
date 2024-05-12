@@ -1,15 +1,22 @@
 import React from 'react'
 import { AppButtonContainer, AppButtonText } from './AppButton.styled'
+import LoadingIndicator from '../LoadingIndicator/LoadingIndicator';
 
 interface Props {
   buttonLabel: string;
   onPress: () => void;
+  disabled?: boolean
+  loading?: boolean
 }
 
-const AppButton: React.FC<Props> = ({ buttonLabel, onPress }) => {
+const AppButton: React.FC<Props> = ({ buttonLabel, onPress, disabled, loading }) => {
   return (
-    <AppButtonContainer onPress={() => onPress()}>
-      <AppButtonText>{buttonLabel}</AppButtonText>
+    <AppButtonContainer onPress={() => onPress()} disabled={disabled || loading}>
+      {loading ?
+        <LoadingIndicator />
+        :
+        <AppButtonText>{buttonLabel}</AppButtonText>
+      }
     </AppButtonContainer>
   )
 }

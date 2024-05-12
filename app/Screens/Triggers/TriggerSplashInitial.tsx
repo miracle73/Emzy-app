@@ -1,18 +1,24 @@
-import React from 'react'
-import { TriggerSplashInitialContainer, TriggerSplashInitialFooterContainer, TriggerSplashInitialFooterTitle, TriggerSplashInitialHeaderContainer, TriggerSplashInitialHeaderTitle } from './Triggers.styled'
+import React, { FC } from 'react'
+import StyledRoot from '../../Components/StyledRoot';
+import { Props } from '../../Utils/utility_functions/utilityFunctions';
+import VideoPlayerComponent from '../../Components/video_player/VideoPlayerComponent';
 
-const image = {uri: 'https://legacy.reactjs.org/logo-og.png'};
 
-const TriggerSplashInitial = () => {
+const TriggerSplashInitial: FC<Props> = ({ navigation }) => {
+
   return (
-    <TriggerSplashInitialContainer source={image} resizeMode="cover">
-        <TriggerSplashInitialHeaderContainer>
-            <TriggerSplashInitialHeaderTitle>Triggers</TriggerSplashInitialHeaderTitle>
-        </TriggerSplashInitialHeaderContainer>
-        <TriggerSplashInitialFooterContainer>
-            <TriggerSplashInitialFooterTitle>What is Kryptonite</TriggerSplashInitialFooterTitle>
-        </TriggerSplashInitialFooterContainer>
-    </TriggerSplashInitialContainer>
+    <StyledRoot
+      enableScroll={false}
+      useScrollFlex
+      style={{ paddingHorizontal: 0 }}
+      safeAreaStyle={{ backgroundColor: '#474137' }}
+    >
+      <VideoPlayerComponent
+        onContinue={() => navigation.navigate('Triggers')}
+        headerText={'Triggers'}
+        footerText={'What is Kryptonite ?'}
+      />
+    </StyledRoot>
   )
 }
 
