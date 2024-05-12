@@ -1,5 +1,5 @@
-import React, { FC, useCallback, useState, useContext, useMemo } from 'react'
-import { StyleSheet, ImageBackground, Text, FlatList } from 'react-native'
+import React, { FC, useCallback, useState, useContext, useMemo, useEffect } from 'react'
+import { StyleSheet, ImageBackground, Text, FlatList, TouchableOpacity } from 'react-native'
 import {
     DashboardBodyContainer,
     DashboardHeaderContainer,
@@ -28,7 +28,7 @@ import StyledRoot from '../../Components/StyledRoot';
 import { colors } from '../../Utils/theme/colors';
 import CenterIcon from '../../Images/Dashboard/emzy_home.png'
 import { View } from 'native-base';
-import { Props } from '../../Utils/utility_functions/utilityFunctions';
+import { Props, height, width } from '../../Utils/utility_functions/utilityFunctions';
 import { useFocusEffect } from '@react-navigation/core';
 import { useQuery } from '@tanstack/react-query';
 import { AppContext } from '../../data_storage/contextApi/AppContext';
@@ -36,9 +36,14 @@ import { useDashboardService, useDashboardVideoConstants } from './dashboardServ
 import { formatDecimalAmount } from '../../Utils/utility_functions/utilityFunctions';
 import DashboardCarousel from './DashboardCarousel';
 import { DashboardDataModel, VideoConstantsData } from '../../Utils/data_models/dataTypes';
+import WebView from 'react-native-webview';
+import { Vimeo } from 'react-native-vimeo-iframe'
+import { getProfileImage } from '../../data_storage/local_storage/LocalStorage';
+import BookVideo from '../../Video/book_toyin.mp4'
+
 
 const Dashboard: FC<Props> = ({ navigation }) => {
-    const { userWholeDetails, userLoginData } = useContext(AppContext)
+    const { userWholeDetails, userLoginData, setProfileUrl, profileUrl } = useContext(AppContext)
     const [refetchUserDetails, isRefetchingUserDetails, dashboardData, refetchDashboardData, isRefetchingDashboardData] = useDashboardService()
     const dashboardValues: DashboardDataModel = useMemo(() => { return dashboardData as DashboardDataModel }, [dashboardData])
     const [videoConstants, refetchVideoConstants, isRefetchingVideoConstants] = useDashboardVideoConstants()
@@ -52,16 +57,26 @@ const Dashboard: FC<Props> = ({ navigation }) => {
         return () => handleChangePaused()
     }, []))
 
-    
+    useEffect(() => {
+        getProfileImage().then((url) => { setProfileUrl(url) })
+    }, [])
+
     return (
         <StyledRoot
             safeAreaStyle={{ backgroundColor: colors.tealishBlue }}
             style={{ paddingHorizontal: 0 }}
             Header={() => (
                 <DashboardHeaderProfileLeftContainer>
-                    <ProfileImage source={{ uri: userWholeDetails?.data?.profile_picture ?? userLoginData?.data?.profile_picture }}></ProfileImage>
+                    <TouchableOpacity onPress={() => navigation.navigate('TabNavigation', { screen: 'More' })}>
+                        <ProfileImage
+                            source={{ uri: profileUrl }}>
+                        </ProfileImage>
+                    </TouchableOpacity>
                     <ProfileTitle>Hello, {userWholeDetails?.data?.first_name ?? userLoginData?.data?.first_name} {userWholeDetails?.data?.last_name ?? userLoginData?.data?.last_name}!</ProfileTitle>
-                    <DashboardHeaderProfileRightContainer>
+                    <DashboardHeaderProfileRightContainer onPress={() => {
+                        navigation.navigate('NotificationSettings')
+                        //go to list of notifications
+                    }}>
                         <NotificationIcon />
                     </DashboardHeaderProfileRightContainer>
                 </DashboardHeaderProfileLeftContainer>
@@ -116,7 +131,7 @@ const Dashboard: FC<Props> = ({ navigation }) => {
                                 const { Icon } = item;
                                 return (
                                     <MasterGoalContainer onPress={() => {
-                                        if (item?.id == 1) navigation.navigate('')
+                                        if (item?.id == 1) navigation.navigate('GoalSettingStack')
                                         if (item?.id == 2) navigation.navigate('Tracker')
                                         if (item?.id == 3) navigation.navigate('Accountability')
                                     }} activeOpacity={0.6}>
@@ -129,16 +144,19 @@ const Dashboard: FC<Props> = ({ navigation }) => {
                     </DashboardMasterGoalWrapper>
                 </DashboardMasterGoalContainer>
                 <DashboardMasterPickContainer>
-                    {videoConstants?.length > 0 &&
-                        <>
-                            <DashboardMasterPickTitle>Hot picks</DashboardMasterPickTitle>
-                            <DashboardMasterPickVideoContainer>
-                                <DashboardCarousel
-                                    data={videoConstants as Array<VideoConstantsData>}
-                                />
-                            </DashboardMasterPickVideoContainer>
-                        </>
-                    }
+                    <DashboardMasterPickTitle>Hot picks</DashboardMasterPickTitle>
+                    <DashboardMasterPickVideoContainer>
+                        {/* <Vimeo
+                            videoId={"879854301"}
+                            handlers={{}}
+                            params={''}
+                        /> */}
+                        <Video
+                            source={BookVideo}
+                            style={{ width: '100%', height: '100%' }}
+                            controls
+                        />
+                    </DashboardMasterPickVideoContainer>
                 </DashboardMasterPickContainer>
             </DashboardBodyContainer>
         </StyledRoot>

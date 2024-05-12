@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useContext, useEffect, useState } from 'react'
 import AppButton from '../../Components/AppButton/AppButton'
 import {
     ChangeEmailLink,
@@ -19,14 +19,20 @@ import useCountdownTimer from '../../Components/CountdownTimer/useCountdownTimer
 import { Text } from 'react-native'
 import LoadingIndicator from '../../Components/LoadingIndicator/LoadingIndicator'
 import { colors } from '../../Utils/theme/colors'
+import { AppContext } from '../../data_storage/contextApi/AppContext'
 
 
 const VerifyEmailForSignUp: FC<Props> = ({ navigation, route }) => {
+    const { setSignupInProgress, setSignupToken } = useContext(AppContext)
     const { email, access } = route?.params
     const [otp, setOtp] = useState<string>('')
     const [startTimer, setStartTimer] = useState<boolean>(true)
     const [timeCount, toResend] = useCountdownTimer(startTimer)
 
+    useEffect(() => {
+        setSignupToken(access)
+        setSignupInProgress(true)
+    }, [])
 
     const { refetch, isFetching } = useQuery(
         [
@@ -51,7 +57,7 @@ const VerifyEmailForSignUp: FC<Props> = ({ navigation, route }) => {
         });
 
 
-    const { refetch: refetchOtp, isRefetching: isRefetchingOtp, isFetching:isFetchingOtp } = useQuery(
+    const { refetch: refetchOtp, isRefetching: isRefetchingOtp, isFetching: isFetchingOtp } = useQuery(
         [
             'resend_otp',
             { token: access }

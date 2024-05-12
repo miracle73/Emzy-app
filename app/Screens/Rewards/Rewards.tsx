@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useContext, useState } from 'react'
 import { KeyboardAvoidingView, Platform } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import AppButton from '../../Components/AppButton/AppButton'
@@ -8,13 +8,18 @@ import CrossIcon from '../../Images/SignUp/CrossIcon'
 import { RewardsOption, RewardsOptionData, RewardsTagsData } from '../../Utils/Consts/Rewards'
 import { Icon, RewardOption, RewardOptionContainer, RewardOptionTitle, RewardOptionWrapper, RewardsBackContainer, RewardsBodyContainer, RewardsBodyDescription, RewardsBodyTitle, RewardsContainer, RewardsFooterContainer, RewardsHeaderContainer, RewardsHeaderTitle, RewardsTag, RewardsTagContainer, RewardsTagWrapper, RewardsWrapper } from './Rewards.styled'
 import { Props } from '../../Utils/utility_functions/utilityFunctions'
+import { AppContext } from '../../data_storage/contextApi/AppContext'
 
 const Rewards: FC<Props> = ({ navigation }) => {
-    const [selectedOption, setSelectedOption] = useState<string>(RewardsOption.AppStore)
-    const [reward, setReward] = useState<string>('')
+    const { goalObject, setGoalObject } = useContext(AppContext)
+    const [reward, setReward] = useState<Array<string>>([])
+
+
     const handleChangeOption = (item: string) => {
-        setSelectedOption(item)
+        if (reward.includes(item)) { setReward((val) => val.filter((e) => e !== item)) }
+        else { setReward((val) => [...val, ...[item]]) }
     }
+
     return (
         <LinearGradient
             colors={['#3E7CD9', 'white', 'white', '#3E7CD9']}
@@ -43,19 +48,25 @@ const Rewards: FC<Props> = ({ navigation }) => {
                                 <RewardOptionWrapper>
                                     {RewardsOptionData?.map((item) => {
                                         return (
-                                            <RewardOption onPress={() => handleChangeOption(item)} isActive={item === selectedOption}>{item}</RewardOption>
+                                            <RewardOption onPress={() => handleChangeOption(item)} isActive={reward.includes(item)}>{item}</RewardOption>
                                         )
                                     })}
                                 </RewardOptionWrapper>
                             </RewardOptionContainer>
                             <RewardsBodyTitle>Even better, gift yourself rewards that matter to you</RewardsBodyTitle>
-                            <AppInput label={'Rewards'} onChange={(val) => { setReward(val) }} name={'name'} value={reward} />
+                            <AppInput
+                                onChange={(val) => { }}
+                                name={'name'}
+                                value={reward}
+                                label={'Rewards'}
+                                onEndEditing={(val) => { if (val?.trim()?.length > 0) { setReward((re) => [...re, ...[val]]) } }}
+                            />
                             <RewardsTagContainer>
-                                {RewardsTagsData?.map((item) => {
+                                {reward?.map((item) => {
                                     return (
                                         <RewardsTagWrapper>
                                             <RewardsTag>{item}</RewardsTag>
-                                            <Icon>
+                                            <Icon onPress={() => { setReward((val) => val.filter((e) => e !== item)) }}>
                                                 <CrossIcon></CrossIcon>
                                             </Icon>
                                         </RewardsTagWrapper>
@@ -65,7 +76,10 @@ const Rewards: FC<Props> = ({ navigation }) => {
                         </RewardsBodyContainer>
                     </RewardsWrapper>
                     <RewardsFooterContainer>
-                        <AppButton buttonLabel={'Continue'} onPress={() => { navigation.navigate('CommitmentSplashInitial') }} />
+                        <AppButton disabled={reward.length < 1} buttonLabel={'Continue'} onPress={() => {
+                            setGoalObject({ ...goalObject, ...{ rewards: reward } })
+                            navigation.navigate('CommitmentSplashInitial')
+                        }} />
                     </RewardsFooterContainer>
                 </RewardsContainer>
             </KeyboardAvoidingView>

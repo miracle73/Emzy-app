@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useContext, useState } from 'react'
 import { KeyboardAvoidingView, Modal, Platform } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import AppButton from '../../Components/AppButton/AppButton'
@@ -7,8 +7,11 @@ import AppTextArea from '../../Components/AppTextArea/AppTextArea'
 import BackArrow from '../../Images/SignUp/BackArrow'
 import { Icon, MetricsBackContainer, MetricsBodyContainer, MetricsContainer, MetricsFooterContainer, MetricsHeaderContainer, MetricsHeaderDescription, MetricsHeaderTitle, ModalBodyContainer, ModalContainer, ModalWrapper, ModelBodyDescription } from './Metrics.styled'
 import { Props } from '../../Utils/utility_functions/utilityFunctions'
+import { AppContext } from '../../data_storage/contextApi/AppContext'
 
 const Metrics: FC<Props> = ({ navigation }) => {
+    const { goalObject, setGoalObject } = useContext(AppContext)
+    const [metric, setMetric] = useState('')
     const [isOpen, setIsOpen] = useState<boolean>(false)
     const handleOpenModel = () => {
         setIsOpen(!isOpen)
@@ -22,7 +25,7 @@ const Metrics: FC<Props> = ({ navigation }) => {
             <KeyboardAvoidingView
                 behavior={Platform.OS == "ios" ? "padding" : "height"}
                 keyboardVerticalOffset={Platform.OS == "ios" ? 0 : 20}
-                enabled={Platform.OS === "ios" ? true : false}
+                enabled={false}
             >
                 <MetricsContainer>
                     <Modal
@@ -57,10 +60,13 @@ const Metrics: FC<Props> = ({ navigation }) => {
                         <AppInfoButton buttonLabel={'Read More'} onPress={() => handleOpenModel()} />
                     </MetricsHeaderContainer>
                     <MetricsBodyContainer>
-                        <AppTextArea onChange={() => { }} />
+                        <AppTextArea onChange={(val) => { setMetric(val) }} />
                     </MetricsBodyContainer>
                     <MetricsFooterContainer>
-                        <AppButton buttonLabel={'Continue'} onPress={() => { navigation.navigate('RewardSplashInitial') }} />
+                        <AppButton buttonLabel={'Continue'} onPress={() => {
+                            setGoalObject({ ...goalObject, ...{ successMetrics: metric } })
+                            navigation.navigate('RewardSplashInitial')
+                        }} disabled={metric?.length < 3} />
                     </MetricsFooterContainer>
                 </MetricsContainer>
             </KeyboardAvoidingView>

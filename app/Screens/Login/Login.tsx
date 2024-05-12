@@ -1,4 +1,4 @@
-import React, { FC, useState, useContext } from 'react'
+import React, { FC, useState, useContext, useEffect } from 'react'
 import LinearGradient from 'react-native-linear-gradient'
 import AppButton from '../../Components/AppButton/AppButton'
 import AppGoogleButton from '../../Components/AppGoogleButton/AppGoogleButton'
@@ -22,9 +22,9 @@ import { useMutation } from '@tanstack/react-query'
 import { AppContext } from '../../data_storage/contextApi/AppContext'
 
 const Login: FC<Props> = ({ navigation }) => {
-    const { setUserLoginData } = useContext(AppContext)
-    const [email, setEmail] = useState<string>('mignocukno@gufum.com')
-    const [password, setPassword] = useState<string>('qwerty1A')
+    const { setUserLoginData, setSignupInProgress } = useContext(AppContext)
+    const [email, setEmail] = useState<string>('') //mignocukno@gufum.com
+    const [password, setPassword] = useState<string>('') //qwerty1A
     const [secureTextEntry, setSecureTextEntry] = useState<boolean>(true)
 
 
@@ -49,6 +49,9 @@ const Login: FC<Props> = ({ navigation }) => {
         if (password.length <= 0) return displayToast('error', 'ERROR', 'Please input your password.')
         mutate({ email, password })
     }
+
+    useEffect(() => { setSignupInProgress(false) }, [])
+    
     return (
         <StyledRoot
             style={{ paddingRight: 0, paddingLeft: 0 }}

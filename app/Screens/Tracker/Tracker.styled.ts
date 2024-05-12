@@ -72,6 +72,7 @@ export const ActivityCardTimeContainer = styled.View`
 display: flex;
 flex-direction: row;
 align-items: center;
+justify-content: flex-end;
 gap: 10px;
 `
 export const ActivityCardTime = styled.Text`

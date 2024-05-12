@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "316191056339",
+    "firebase_url": "https://emotel-695c2-default-rtdb.firebaseio.com",
+    "project_id": "emotel-695c2",
+    "storage_bucket": "emotel-695c2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:316191056339:android:448b9d1a73d6f3d5550f26",
+        "android_client_info": {
+          "package_name": "com.zeitios.emotell"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpDt246Mq0WWrotzGy9w5F2qO3lkjw4pI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

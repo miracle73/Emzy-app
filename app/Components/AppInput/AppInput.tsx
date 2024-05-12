@@ -13,12 +13,20 @@ interface Props {
   passwordIconShow?: boolean;
   handleShowPassword?: () => void;
   placeHolder?: string;
+  onEndEditing?: (e: string) => void;
 }
 
-const AppInput: React.FC<Props> = ({ value, label, width, secureTextEntry, onChange, passwordIconShow, handleShowPassword, placeHolder }) => {
+const AppInput: React.FC<Props> = ({ value, label, width, secureTextEntry, onChange, passwordIconShow, handleShowPassword, placeHolder, onEndEditing }) => {
   return (
     <AppInputContainer width={width}>
-      <Input value={value} secureTextEntry={secureTextEntry} onChangeText={onChange} placeholder={placeHolder}></Input>
+      <Input
+        onEndEditing={(val) => { onEndEditing && onEndEditing(val.nativeEvent.text) }}
+        value={value}
+        secureTextEntry={secureTextEntry}
+        onChangeText={onChange}
+        placeholder={placeHolder}>
+
+      </Input>
       {
         passwordIconShow ?
           <>

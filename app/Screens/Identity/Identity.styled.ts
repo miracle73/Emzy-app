@@ -37,13 +37,14 @@ color: #FFFFFF;
 text-align: center;
 `
 export const IdentityContainer = styled.View`
-height: 100%;
+
 width: 100%;
 padding: 20px;
 display: flex;
 flex-direction: column;
 gap: 20px;
 position: relative;
+margin-bottom:50;
 `
 export const IdentityBackContainer = styled.View`
 margin-top: 20px;
@@ -83,10 +84,12 @@ export const IdentityBodyContainer = styled.View`
 margin-top: 40px;
 `
 export const IdentityFooterContainer = styled.View`
-position: absolute;
-bottom: 40px;
-width: 100%;
-left: 20px;
+align-self: flex-end;
+margin-bottom: 0px;
+width: 90%;
+margin-right: auto;
+margin-left:auto;
+
 `
 export const ModalWrapper = styled.View`
 flex: 1;

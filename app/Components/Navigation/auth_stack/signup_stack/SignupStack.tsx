@@ -12,9 +12,9 @@ const SignupStack = () => {
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="SignUp" component={SignUp} />
+            <Stack.Screen name="AccountSuccess" component={AccountSuccess} />
             <Stack.Screen name="SignUpAuth" component={SignUpAuth} />
             <Stack.Screen name="VerifyEmail" component={VerifyEmail} />
-            <Stack.Screen name="AccountSuccess" component={AccountSuccess} />
             <Stack.Screen name="VerifyEmailForSignUp" component={VerifyEmailForSignUp} />
         </Stack.Navigator>
     )

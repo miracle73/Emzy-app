@@ -1,5 +1,5 @@
 #import "AppDelegate.h"
-
+#import <Firebase.h>
 #import <React/RCTBundleURLProvider.h>
 
 static void ClearKeychainIfNecessary() {
@@ -28,6 +28,7 @@ static void ClearKeychainIfNecessary() {
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  [FIRApp configure];
   self.moduleName = @"Emotell";
   // You can add your custom initial props in the dictionary below.
   // They will be passed down to the ViewController used by React Native.

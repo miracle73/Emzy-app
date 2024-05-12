@@ -11,7 +11,7 @@ const RewardSplashInitial: FC<Props> = ({ navigation }) => {
     <LinearGradient
       colors={['rgba(26, 115, 232, 0.3)', 'white', 'rgba(255, 255, 255, 0.2)', 'rgba(26, 115, 232, 0.5)']}
       start={{ x: 0.2, y: 0 }}
-      end={{ x: 1, y: 1 }}
+      end={{ x: 1, y: 0.6}}
     >
       <RewardSplashInitialContainer>
         <RewardCheerfulManIcon style={{ position: 'absolute', top: 60 }} />

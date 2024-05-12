@@ -18,7 +18,7 @@ import { colors } from '../../Utils/theme/colors';
 const SplashForth = ({ navigation }: any) => {
 
   const handleButtonClick = () => {
-    navigation.navigate('LoginStack');
+    navigation.replace('LoginStack');
   };
 
   useEffect(() => { setIsFirstLaunch(false) }, [])

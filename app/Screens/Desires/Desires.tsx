@@ -1,12 +1,15 @@
-import React, { FC } from 'react'
+import React, { FC, useContext, useState } from 'react'
 import LinearGradient from 'react-native-linear-gradient'
 import FinanceIcon from '../../Images/Desires/FinanceIcon'
 import RightCornerIcon from '../../Images/Desires/RightCornerIcon'
 import { DesireAreaData } from '../../Utils/Consts/Desires'
-import { DesiresAreaContainer, DesiresAreaTitle, DesiresBodyContainer, DesiresContainer, DesiresHeaderContainer, DesiresHeaderDescription, DesiresHeaderTitle, Icon } from './Desires.styled'
+import { DesiresAreaContainer, DesiresAreaTitle, DesiresBodyContainer, DesiresContainer, DesiresHeaderContainer, DesiresHeaderDescription, DesiresHeaderTitle, Icon } from '../Desires/Desires.styled'
 import { Props } from '../../Utils/utility_functions/utilityFunctions'
+import { AppContext } from '../../data_storage/contextApi/AppContext'
 
 const Desires: FC<Props> = ({ navigation }) => {
+    const { setGoalObject, goalObject, signupInProgress } = useContext(AppContext)
+    const [outcome, setOutcome] = useState('')
     return (
         <LinearGradient
             colors={['#3E7CD9', 'white', 'white', '#3E7CD9']}
@@ -24,10 +27,13 @@ const Desires: FC<Props> = ({ navigation }) => {
                     {DesireAreaData?.map((item, index) => {
                         const { AreaIcon, Name } = item;
                         return (
-                            <DesiresAreaContainer key={index}>
+                            <DesiresAreaContainer key={index} onPress={() => {
+                                setGoalObject({ ...goalObject, ...{ topOutcome: item?.Name } })
+                                navigation.navigate('GoalSplashInitial')
+                            }}>
                                 {AreaIcon && <AreaIcon />}
                                 <DesiresAreaTitle>{item?.Name}</DesiresAreaTitle>
-                                <Icon onPress={() => navigation.navigate('GoalSplashInitial')}>
+                                <Icon>
                                     <RightCornerIcon />
                                 </Icon>
                             </DesiresAreaContainer>

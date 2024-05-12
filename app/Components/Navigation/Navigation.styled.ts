@@ -23,4 +23,5 @@ font-family: Poppins;
 font-weight: 400;
 font-size: ${({fontSize})=> fontSize ? fontSize : 12}px;
 color: ${({ isFocused }) => isFocused ? '#3E7CD9' : '#C7CBD1'};
+margin-top: -5px;
 `

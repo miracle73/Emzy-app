@@ -1,5 +1,5 @@
 import { Box, Slider, VStack } from 'native-base';
-import React, { FC, useState } from 'react'
+import React, { FC, useContext, useState } from 'react'
 import { Platform } from 'react-native';
 import { KeyboardAvoidingView } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient'
@@ -9,11 +9,16 @@ import BackArrow from '../../Images/SignUp/BackArrow'
 import { CommitmentImportantData, CommitmentImportantEnum } from '../../Utils/Consts/Commitment'
 import { CommitmentBackContainer, CommitmentBodyContainer, CommitmentBodyDescription, CommitmentContainer, CommitmentFooterContainer, CommitmentHeaderContainer, CommitmentHeaderTitle, CommitmentImportant, CommitmentImportantContainer, CommitmentImportantTitle, CommitmentImportantWrapper, CommitmentSliderContainer, CommitmentSliderDescription, CommitmentSliderLabel, CommitmentSliderTitle, CommitmentSliderWrapper, Icon } from './Commitment.styled'
 import { Props } from '../../Utils/utility_functions/utilityFunctions';
+import { AppContext } from '../../data_storage/contextApi/AppContext';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 
 const Commitment: FC<Props> = ({ navigation }) => {
+    const { goalObject, setGoalObject } = useContext(AppContext)
     const [selectedImportantData, setSelectedImportantData] = useState<number>(CommitmentImportantEnum.first)
-    const [sliderValue, setSliderValue] = useState<any>('0')
+    const [sliderValue, setSliderValue] = useState<any>('30')
+    const [why, setWhy] = useState('')
+
     const handleChangeImportant = (item: number) => {
         setSelectedImportantData(item)
     }
@@ -23,10 +28,8 @@ const Commitment: FC<Props> = ({ navigation }) => {
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
         >
-            <KeyboardAvoidingView
-                behavior={Platform.OS == "ios" ? "padding" : "height"}
-                keyboardVerticalOffset={Platform.OS == "ios" ? 0 : 20}
-                enabled={Platform.OS === "ios" ? true : false}
+            <KeyboardAwareScrollView
+               style={{ width: '100%', height: '100%' }}
             >
                 <CommitmentContainer>
                     <CommitmentBackContainer>
@@ -74,13 +77,16 @@ const Commitment: FC<Props> = ({ navigation }) => {
                             </CommitmentSliderWrapper>
                             <CommitmentSliderDescription>This is my why</CommitmentSliderDescription>
                         </CommitmentSliderContainer>
-                        <AppTextArea onChange={() => { }} />
+                        <AppTextArea onChange={(val) => { setWhy(val) }} />
                     </CommitmentBodyContainer>
-                    <CommitmentFooterContainer>
-                        <AppButton buttonLabel={'Continue'} onPress={() => { navigation.navigate('TriggerSplashInitial') }} />
-                    </CommitmentFooterContainer>
                 </CommitmentContainer>
-            </KeyboardAvoidingView>
+                    <CommitmentFooterContainer>
+                        <AppButton disabled={why?.trim()?.length < 3} buttonLabel={'Continue'} onPress={() => {
+                            setGoalObject({ ...goalObject, ...{ duration: Number(sliderValue), commitmentReason: why, commitmentLevel: Number(selectedImportantData) } })
+                            navigation.navigate('TriggerSplashInitial')
+                        }} />
+                    </CommitmentFooterContainer>
+            </KeyboardAwareScrollView>
         </LinearGradient>
     )
 }

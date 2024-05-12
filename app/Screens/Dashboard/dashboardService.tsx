@@ -44,14 +44,14 @@ export const useDashboardService = () => {
     return [refetchUserDetails, isRefetchingUserDetails, dashboardData, refetchDashboardData, isRefetchingDashboardData]
 }
 
-export const useDashboardVideoConstants = () => {
+export const useDashboardVideoConstants = (accessToken: string | null = null) => {
     const { userLoginData } = useContext(AppContext)
     const [videoConstants, setVideoConstants] = useState<Array<VideoConstantsData>>()
 
     const { refetch: refetchVideoConstants, isRefetching: isRefetchingVideoConstants } = useQuery(
         [
             'constants',
-            { token: userLoginData?.data?.access }
+            { token: accessToken ? accessToken : userLoginData?.data?.access }
 
         ],
         getVideoConstants,

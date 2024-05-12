@@ -10,6 +10,7 @@ import StyledRoot from '../../Components/StyledRoot'
 import { displayToast, validateEmail, validatePassword } from '../../Utils/utility_functions/utilityFunctions'
 import { useMutation } from '@tanstack/react-query'
 import { signup } from '../../Utils/network_service/NetworkServices'
+import { KeyboardAvoidingView, StyleSheet, Text } from 'react-native'
 
 
 const SignUp: FC<Props> = ({ navigation }) => {
@@ -25,7 +26,7 @@ const SignUp: FC<Props> = ({ navigation }) => {
         if (lastName.trim().length <= 0) return displayToast('error', 'ERROR', 'Please input your last name.')
         if (email.trim().length <= 0) return displayToast('error', 'ERROR', 'Please input your email.')
         if ((password.trim()?.length < 8)) return displayToast('error', 'ERROR', 'Password must be atleast 8 characters long.')
-        if (!validatePassword(password.trim())) return displayToast('error', 'ERROR', "Password must've atleast 1 uppercase, 1 lowercase letters")
+        if (!validatePassword(password.trim())) return displayToast('error', 'ERROR', "Password not in the right format")
         if (!validateEmail(email.trim())) return displayToast('error', 'ERROR', 'email not in the correct format.')
         mutate({ firstName, lastName, password, email })
     }
@@ -46,11 +47,10 @@ const SignUp: FC<Props> = ({ navigation }) => {
             }
         },
         onError: (err: any) => {
+            console.log(err.response.data)
             displayToast('error', 'ERROR', 'Signup could not be completed. Please try again')
         },
     });
-
-
 
 
     return (
@@ -65,36 +65,51 @@ const SignUp: FC<Props> = ({ navigation }) => {
                 end={{ x: 1.5, y: 2 }}
                 style={{ width: '100%', height: '100%' }}
             >
-                <SignUpContainer>
-                    <SignUpHeaderContainer>
-                        <SignUpHeaderTitle>Welcome to Emo Mental Mastery</SignUpHeaderTitle>
-                        <SignUpHeaderDescription>Enter your email address to get started</SignUpHeaderDescription>
-                    </SignUpHeaderContainer>
-                    <SignUpBodyContainer>
-                        <SignUpNameContainer>
-                            <AppInput value={firstName} label={'First Name'} width={'45%'} onChange={(val) => setFirstName(val)} name={'firstName'} />
-                            <AppInput value={lastName} label={'Last Name'} width={'45%'} onChange={(val) => setLastName(val)} name={'lastName'} />
-                        </SignUpNameContainer>
-                        <AppInput value={email} label={'Email'} onChange={(val) => setEmail(val)} name={'email'} />
-                        <AppInput value={password} label={'Password'} secureTextEntry={isPasswordHide} onChange={(val) => setPassword(val)} name={'password'} passwordIconShow={true} handleShowPassword={handleShowPassword} />
-                    </SignUpBodyContainer>
-                    <SignUpFooterContainer>
-                        <AppButton buttonLabel={'Continue'} onPress={() => {
-                            startSignUp()
-                        }} loading={isLoading} />
-                        <GoogleButton>
-                            <GoogleIcon />
-                            <GoogleButtonText>Continue with Google</GoogleButtonText>
-                        </GoogleButton>
-                        <FooterDescriptionContainer>
-                            <FooterDescription>Already have an account</FooterDescription>
-                            <FooterSignUpLink onPress={() => { navigation.navigate('LoginStack') }}>Sign in</FooterSignUpLink>
-                        </FooterDescriptionContainer>
-                    </SignUpFooterContainer>
-                </SignUpContainer>
+                <KeyboardAvoidingView>
+
+                    <SignUpContainer>
+                        <SignUpHeaderContainer>
+                            <SignUpHeaderTitle>Welcome to Emo Mental Mastery</SignUpHeaderTitle>
+                            <SignUpHeaderDescription>Enter your email address to get started</SignUpHeaderDescription>
+                        </SignUpHeaderContainer>
+                        <SignUpBodyContainer>
+                            <SignUpNameContainer>
+                                <AppInput value={firstName} label={'First Name'} width={'45%'} onChange={(val) => setFirstName(val)} name={'firstName'} />
+                                <AppInput value={lastName} label={'Last Name'} width={'45%'} onChange={(val) => setLastName(val)} name={'lastName'} />
+                            </SignUpNameContainer>
+                            <AppInput value={email} label={'Email'} onChange={(val) => setEmail(val)} name={'email'} />
+                            <AppInput value={password} label={'Password'} secureTextEntry={isPasswordHide} onChange={(val) => setPassword(val)} name={'password'} passwordIconShow={true} handleShowPassword={handleShowPassword} />
+                            <Text style={styles.warn}>Password must be atleast 8 characters long, and must have atleast 1 number, 1 uppercase, 1 lowercase and 1 special character</Text>
+                        </SignUpBodyContainer>
+                        <SignUpFooterContainer>
+                            <AppButton buttonLabel={'Continue'} onPress={() => {
+                                startSignUp()
+                            }} loading={isLoading} />
+                            <GoogleButton>
+                                <GoogleIcon />
+                                <GoogleButtonText>Continue with Google</GoogleButtonText>
+                            </GoogleButton>
+                            <FooterDescriptionContainer>
+                                <FooterDescription>Already have an account</FooterDescription>
+                                <FooterSignUpLink onPress={() => { navigation.navigate('LoginStack') }}>Sign in</FooterSignUpLink>
+                            </FooterDescriptionContainer>
+                        </SignUpFooterContainer>
+                    </SignUpContainer>
+                </KeyboardAvoidingView>
             </LinearGradient>
         </StyledRoot>
     )
 }
 
 export default SignUp
+
+const styles = StyleSheet.create({
+    warn: {
+        color: '#EE4B2B',
+        fontSize: 10,
+        fontWeight: '500',
+        alignSelf: 'flex-start',
+        marginLeft: 10,
+        marginTop: -15
+    }
+})

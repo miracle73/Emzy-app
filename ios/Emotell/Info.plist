@@ -39,6 +39,13 @@
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string/>
+
+	<key>NSCameraUsageDescription</key>
+	<string>To be able to take photos, Your permission is required to access your phone camera.</string>
+
+    <key>NSPhotoLibraryUsageDescription</key>
+	<string>To be able to access photos and images, Your permission is required to access your phone gallery.</string>
+
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>

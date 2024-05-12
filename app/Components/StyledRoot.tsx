@@ -59,9 +59,11 @@ const StyledRoot: FC<Props> = ({
         onPress={onPress}
       >
         <KeyboardAwareScrollView
+          nestedScrollEnabled
           onMoveShouldSetResponderCapture={() => true}
           extraScrollHeight={5}
           extraHeight={5}
+          enableOnAndroid
           style={{ width: '100%' }}
           contentContainerStyle={useScrollFlex ? { ...styledRootStyles.scrollContent, ...{ flex: 1 }, ...contentContainerStyle } : { ...styledRootStyles.scrollContent, ...contentContainerStyle }}
           showsVerticalScrollIndicator={false}
@@ -89,6 +91,7 @@ const StyledRoot: FC<Props> = ({
       </View>
       <View style={[styledRootStyles.root, style]}>
         <KeyboardAwareScrollView
+          nestedScrollEnabled
           extraScrollHeight={5}
           extraHeight={5}
           enableOnAndroid

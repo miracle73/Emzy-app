@@ -34,7 +34,7 @@ text-align: center;
 color: #FFFFFF;
 `
 export const CommitmentContainer = styled.View`
-height: 100%;
+
 width: 100%;
 display: flex;
 flex-direction: column;
@@ -139,8 +139,9 @@ font-size: 16px;
 color: #000000;
 `
 export const CommitmentFooterContainer = styled.View`
-position: absolute;
-width: 100%;
-left: 20px;
+margin-top:30px;
+width: 90%;
+margin-left:auto;
+margin-right:auto;
 bottom: 20px;
 `
