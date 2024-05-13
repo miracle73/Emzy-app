@@ -17,7 +17,7 @@ const AccountSuccess: FC<Props> = ({ navigation }) => {
         IdentitySplashInitial: videoConstants[1]?.video_link,
         TriggerSplashInitial: videoConstants[2]?.video_link,
         CommitmentSplashInitial: videoConstants[3]?.video_link,
-        MetricSplashInitial: videoConstants[4]?.video_link,
+        MetricSplashInitial: videoConstants[0]?.video_link,
         GoalSplashInitial: videoConstants[0]?.video_link,
         AccountabilityManagerSplashInitial: videoConstants[0]?.video_link,
         RewardSplashSubsequent: videoConstants[0]?.video_link,
@@ -42,6 +42,7 @@ const AccountSuccess: FC<Props> = ({ navigation }) => {
         }}
         buttonLabel={isRefetchingVideoConstants ? 'Please wait...' : 'Continue'}
         disabled={isRefetchingVideoConstants as boolean}
+        
       />
     </AccountSuccessContainer>
   )

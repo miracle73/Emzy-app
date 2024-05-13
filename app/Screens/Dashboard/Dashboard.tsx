@@ -21,6 +21,7 @@ import {
     ProfileTitle
 } from './Dashboard.styled'
 import Video from 'react-native-video';
+import VideoPlayer from 'react-native-media-console';
 import NotificationIcon from '../../Images/Dashboard/NotificationIcon';
 import DopamineCoinIcon from '../../Images/Dashboard/DopamineCoinIcon';
 import { MasterGoalData } from '../../Utils/Consts/Dashboard';
@@ -43,23 +44,27 @@ import BookVideo from '../../Video/book_toyin.mp4'
 
 
 const Dashboard: FC<Props> = ({ navigation }) => {
-    const { userWholeDetails, userLoginData, setProfileUrl, profileUrl } = useContext(AppContext)
+    const { userWholeDetails, userLoginData, setProfileUrl, profileUrl, setSignupInProgress } = useContext(AppContext)
     const [refetchUserDetails, isRefetchingUserDetails, dashboardData, refetchDashboardData, isRefetchingDashboardData] = useDashboardService()
     const dashboardValues: DashboardDataModel = useMemo(() => { return dashboardData as DashboardDataModel }, [dashboardData])
     const [videoConstants, refetchVideoConstants, isRefetchingVideoConstants] = useDashboardVideoConstants()
     const [paused, setPaused] = useState<boolean>(false)
+    const [showVideo, setShowVideo] = useState<boolean>(false)
 
     const handleChangePaused = () => {
         // setPaused(!paused)
     }
 
     useFocusEffect(useCallback(() => {
-        return () => handleChangePaused()
+        setTimeout(() => { setShowVideo(true) }, 2000)
+        return () => { setShowVideo(false); handleChangePaused() }
     }, []))
 
     useEffect(() => {
         getProfileImage().then((url) => { setProfileUrl(url) })
     }, [])
+
+    useFocusEffect(useCallback(() => { setSignupInProgress(false) }, []))
 
     return (
         <StyledRoot
@@ -151,11 +156,20 @@ const Dashboard: FC<Props> = ({ navigation }) => {
                             handlers={{}}
                             params={''}
                         /> */}
-                        <Video
-                            source={BookVideo}
-                            style={{ width: '100%', height: '100%' }}
-                            controls
-                        />
+                        {showVideo &&
+                            // <Video
+                            //     source={BookVideo}
+                            //     style={{ width: '100%', height: '100%' }}
+                            //     // controls={showVideo}
+                            // // ref={}
+                            // />
+                            <VideoPlayer
+                                source={require('../../Video/book_toyin.mp4')}
+                                onBack={() => { }}
+                                isFullscreen={false}
+                                resizeMode={'contain'}
+                            />
+                        }
                     </DashboardMasterPickVideoContainer>
                 </DashboardMasterPickContainer>
             </DashboardBodyContainer>

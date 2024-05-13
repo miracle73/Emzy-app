@@ -7,6 +7,7 @@ import { colors } from '../../Utils/theme/colors';
 
 const MetricSplashInitial: FC<Props> = ({ navigation }) => {
   const { onboardingVideoUrls } = useContext(AppContext)
+  console.log(onboardingVideoUrls)
   return (
     <StyledRoot
       enableScroll={false}

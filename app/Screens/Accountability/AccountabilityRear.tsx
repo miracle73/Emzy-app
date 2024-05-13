@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useContext } from 'react'
 import LinearGradient from 'react-native-linear-gradient'
-import { AccountabilityRearBodyTitle, AccountabilityRearBodyTitleSpan, AccountabilityRearContainer, AccountabilityRearFooterContainer, AccountabilityRearFooterTitle, AccountabilityRearHeaderContainer,Icon  } from './Accountability.styled'
+import { AccountabilityRearBodyTitle, AccountabilityRearBodyTitleSpan, AccountabilityRearContainer, AccountabilityRearFooterContainer, AccountabilityRearFooterTitle, AccountabilityRearHeaderContainer, Icon } from './Accountability.styled'
 import { Props, displayToast } from '../../Utils/utility_functions/utilityFunctions'
 import { AppContext } from '../../data_storage/contextApi/AppContext'
 import { useMutation } from '@tanstack/react-query'
@@ -26,7 +26,7 @@ const AccountabilityRear: FC<Props> = ({ navigation }) => {
             if (signupInProgress) {
               navigation.replace('LoginStack')
             } else {
-              navigation.replace('TabNavigation', { screen: 'Tracker' })
+              navigation.replace('TabNavigation', { screen: 'Home' })
             }
           }, 3000)
         }
@@ -47,16 +47,37 @@ const AccountabilityRear: FC<Props> = ({ navigation }) => {
       if (data?.data?.status == 'success') {
         console.log(data?.data, '  invitation')
         displayToast('success', 'SUCCESS', 'Goal successfuly set')
-        setTimeout(() => { navigation.replace('TabNavigation', { screen: 'Tracker' }) }, 3000)
+        // setTimeout(() => { navigation.replace('TabNavigation', { screen: 'Home' }) }, 3000)
+        setTimeout(() => {
+          if (signupInProgress) {
+            navigation.replace('LoginStack')
+          } else {
+            navigation.replace('TabNavigation', { screen: 'Home' })
+          }
+        }, 3000)
       } else {
         displayToast('success', 'SUCCESS', 'Goal successfuly set')
-        setTimeout(() => { navigation.replace('TabNavigation', { screen: 'Tracker' }) }, 3000)
+        // setTimeout(() => { navigation.replace('TabNavigation', { screen: 'Home' }) }, 3000)
+        setTimeout(() => {
+          if (signupInProgress) {
+            navigation.replace('LoginStack')
+          } else {
+            navigation.replace('TabNavigation', { screen: 'Home' })
+          }
+        }, 3000)
       }
     },
     onError: (err: any) => {
       displayToast('success', 'SUCCESS', 'Goal successfuly set')
+      // setTimeout(() => {
+      //   navigation.replace('TabNavigation', { screen: 'Home' })
+      // }, 3000)
       setTimeout(() => {
-        navigation.replace('TabNavigation', { screen: 'Tracker' })
+        if (signupInProgress) {
+          navigation.replace('LoginStack')
+        } else {
+          navigation.replace('TabNavigation', { screen: 'Home' })
+        }
       }, 3000)
       console.log(err.response?.data)
       // displayToast('error', 'ERROR', 'Goal setting has failed. Please try again')

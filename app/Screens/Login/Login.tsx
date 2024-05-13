@@ -1,4 +1,4 @@
-import React, { FC, useState, useContext, useEffect } from 'react'
+import React, { FC, useState, useContext, useEffect, useCallback } from 'react'
 import LinearGradient from 'react-native-linear-gradient'
 import AppButton from '../../Components/AppButton/AppButton'
 import AppGoogleButton from '../../Components/AppGoogleButton/AppGoogleButton'
@@ -20,6 +20,7 @@ import StyledRoot from '../../Components/StyledRoot'
 import { login } from '../../Utils/network_service/NetworkServices'
 import { useMutation } from '@tanstack/react-query'
 import { AppContext } from '../../data_storage/contextApi/AppContext'
+import { useFocusEffect } from '@react-navigation/native'
 
 const Login: FC<Props> = ({ navigation }) => {
     const { setUserLoginData, setSignupInProgress } = useContext(AppContext)
@@ -50,8 +51,8 @@ const Login: FC<Props> = ({ navigation }) => {
         mutate({ email, password })
     }
 
-    useEffect(() => { setSignupInProgress(false) }, [])
-    
+    useFocusEffect(useCallback(() => { setSignupInProgress(false) }, []))
+
     return (
         <StyledRoot
             style={{ paddingRight: 0, paddingLeft: 0 }}
